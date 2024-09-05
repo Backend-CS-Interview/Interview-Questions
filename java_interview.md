@@ -1,4 +1,80 @@
 ## ☕️ 자바 면접 질문 정리
+<details>
+<summary>Garbage Collection과 Garbage Collector의 차이를 설명해주세요.</summary>
+
+<br/>
+
+가비지 콜렉션은 JVM에서 Heap 영역에 동적으로 할당했던 메모리 중, 더 이상 사용하지 않는 객체들, 메모리를 자동으로 찾아 해제하는 프로세스입니다. 이를 통해 개발자가 명시적으로 메모리를 해제하지 않아도, 메모리를 안전하게 관리할 수 있습니다. 가비지 콜렉터는 이러한 작업, 즉 가비지 컬렉션을 수행하는 시스템의 구성 요소입니다.
+
+<br/>
+
+<details>
+<summary>꼬리질문1: 그렇다면 개발자는 가비지콜렉터만 믿고 메모리를 신경쓰지 않아도 되는 것인가요?</summary>
+
+<br/>
+
+그것은 아닙니다. 가비지 컬렉션에도 단점이 존재하는데요. 자동으로 할당 해제를 해준다고 해도, 메모리가 정확히 언제 해제되는지 알 수가 없고, 이를 제어할 수 없습니다. 또한 가비지 컬렉션을 하는 동안은 다른 동작을 멈춰 오버헤드가 발생하는 문제점이 존재합니다.(이를 Stop-The-World, STW라고 합니다. 과거 익스플로러가 악명이 높았던 이유가 잦은 GC 때문이라고 해요.)
+
+</details>
+
+<br/>
+
+<details>
+<summary>꼬리질문2: 그렇다면 heap의 구조에 대해서 설명해주세요.</summary>
+
+<br/>
+
+Heap에는 Young영역과 Old영역이 있는데요. Young은 Eden과 Survivor0,1영역으로 나뉩니다. 대부분의 새롭게 생성된 객체는 Young, 특히 Eden에 위치합니다. 여기서 GC가 한번 발생한 후에 살아있는 객체는 Survivor0, Survivor영역이 가득 차게 되면 그 중에서 살아남은 객체를 다른 Survivor로 옮기고 기존 영역은 비웁니다. 이 과정을 반복하면서 살아남아 age가 임계값에 도달한 객체는 Old영역으로 이동하게 됩니다.
+
+</details>
+
+<br/>
+
+<details>
+<summary>꼬리질문3: 가비지 컬렉션의 과정을 설명해주세요.(꼬리질문 2번과 엮어서 생각해주세요)</summary>
+
+<br/>
+
+답변: 먼저 GC를 실행하기 위해 JVM이 애플리케이션의 실행을 멈춥니다. 이는 Stop-The-World, 즉 STW라는 작업을 하여 실행 중인 스레드를 제외한 모든 스레드의 작업이 중단됩니다. 이후 어떤 Object를 Garbage로 판단할지 설명을 하겠습니다. GC는 특정 객체가 garbage인지 아닌지 판단하기 위해 Reachability라는 개념을 적용하는데요. 객체에 유효한 레퍼런스가 있다면 Reachable, 없다면 Unreachable로 구분하고 unreachable은 수거합니다. 이 때 Mark and Sweep 방식을 이용합니다. root space로부터 그래프 순회를 통해 각각 어떤 객체를 참조하고 있는지 mark, Unreachable 객체들을 heap에서 제거하는 sweep, 이후 분산된 객체들을 heap의 시작 주소로 모아 압축합니다.(이건 종류에 따라 안할 수도 있다고 합니다)
+
+### 추가 설명
+
+Minor GC
+
+Young 영역은 짧게 살아남는 메모리들이 존재하는 공간입니다. 모든 객체는 처음에는 Young에 생성되는데, 이 공간은 Old에 비해 상대적으로 작기 때문에 메모리를 제거하는데 적은 시간이 걸립니다. 따라서 이 공간에서 메모리 상의 객체를 찾아 제거하는데 적은 시간이 걸립니다.
+
+- 과정
+    
+    처음 생성된 객체는 Eden에 위치
+    
+    Eden영역이 꽉 차게 되면 Minor GC 실행
+    
+    Mark 동작을 통해 reachable 객체 탐색
+    
+    살아남은 객체는 Survivor 영역으로 이동
+    
+    Eden영역에서 unreachable 상태의 객체의 메모리 해제(sweep)
+    
+    살아남은 객체들 age 값 1 증가
+    
+    또 다시 Eden영역이 새로운 객체들로 가득 차면 minor GC 발생하고 mark한다.
+    
+    mark가 된 객체들은 비어있는 Survivor1으로 이동하고 sweep
+    
+    다시 살아남은 모든 객체들은 age가 1씩 증가, 이 과정 반복
+    
+Major GC(Full GC)
+
+Old 는 길게 살아남는 메모리들이 존재하는 공간입니다. 이들은 Young에서 시작해서 age가 임계값을 달성하여 Old로 이동한(promotion된) 객체들입니다. Major GC는 객체들이 계속 쌓이다가 Old에서 메모리가 부족해지면 발생합니다. Old는 Young보다 상대적으로 큰 공간을 가지고 있어 객체 제거에 많은 시간이 걸립니다. 따라서 STW문제가 발생하게 됩니다. 
+
+| GC 종류 | Minor GC | Major GC |
+| --- | --- | --- |
+| 대상 | Young Generation | Old Generation |
+| 실행 시점 | Eden 영역이 꽉 찬 경우 | Old 영역이 꽉 찬 경우 |
+| 실행 속도 | 빠름 | 느림 |
+</details>
+
+</details>
 
 <details>
 <summary>자바의 Wrapper 클래스는 무엇이며, 왜 사용하나요?</summary>
