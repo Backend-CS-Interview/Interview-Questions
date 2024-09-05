@@ -1,4 +1,36 @@
 ## ☕️ 자바 면접 질문 정리
+
+<details>
+<summary>StringBuilder 와 StringBuffer 의 차이에 대해 설명해주세요</summary>
+
+<br/>
+
+StringBuilder와 StringBuffer는 내부에서 char[] 배열을 이용해 가변 문자열을 처리하는 클래스입니다. 주요 차이점은 동기화 여부입니다. StringBuilder 는 동기화를 지원하지 않는 반면, StringBuffer는 메서드는 synchronized 키워드로 동기화를 지원하기 때문에 멀티스레드 환경에서 안전하게 동작할 수 있습니다. 성능상으로는 StringBuilder 가 동기화가 없으므로 더 빠르게 동작합니다.
+
+<br/>
+
+<details>
+<summary>꼬리질문1: 왜 동기화(synchronized)가 걸려 있으면 느릴까요?</summary>
+
+<br/>
+동기화가 성능에 영향을 미치는 이유는 synchronized 키워드로 인해 자바의 모니터 락(monitor lock) 메커니즘이 동작하기 때문입니다. 동기화된 메서드나 블록에 접근하려면 스레드가 락을 먼저 획득해야 하며, 이 과정에서 락 획득(lock acquisition)과 락 해제(lock release)에 따른 추가적인 연산이 발생합니다. 특히, 멀티스레드 환경에서 여러 스레드가 동시에 같은 자원에 접근할 경우, 락 경쟁(lock contention) 이 발생하여 스레드가 대기하는 시간이 길어지고 성능이 저하됩니다. 또한, 스레드 간 컨텍스트 스위칭(context switching), 캐시 미스(cache miss) 와 같은 운영체제 수준의 오버헤드가 발생해 성능에 부정적인 영향을 미칠 수 있습니다.
+
+</details>
+ 
+<details>
+<summary>꼬리질문2: 싱글 스레드로 접근한다는 가정하에선 StringBuilder 와 StringBuffer 의 성능이 똑같을까요?</summary>
+
+<br/>
+싱글 스레드 환경이라도 StringBuffer 는 동기화된 메서드를 사용하기 때문에 동기화 메커니즘에 따른 락 획득과 해제 비용아 발생합니다. 이러한 비용은 불필요한 오버헤드로 작용하여 성능이 저하됩니다. 반면, StringBuilder는 동기화되지 않아 추가적인 락 처리 과정이 없으므로, 싱글스레드 환경에서도 StringBuilder 가 StringBuffer 보다 성능이 더 빠릅니다.
+
+<br/>
+
+</details>
+
+<br/>
+
+</details>
+
 <details>
 <summary>Garbage Collection과 Garbage Collector의 차이를 설명해주세요.</summary>
 
@@ -17,8 +49,6 @@
 
 </details>
 
-<br/>
-
 <details>
 <summary>꼬리질문2: 그렇다면 heap의 구조에 대해서 설명해주세요.</summary>
 
@@ -28,14 +58,12 @@ Heap에는 Young영역과 Old영역이 있는데요. Young은 Eden과 Survivor0,
 
 </details>
 
-<br/>
-
 <details>
 <summary>꼬리질문3: 가비지 컬렉션의 과정을 설명해주세요.(꼬리질문 2번과 엮어서 생각해주세요)</summary>
 
 <br/>
 
-답변: 먼저 GC를 실행하기 위해 JVM이 애플리케이션의 실행을 멈춥니다. 이는 Stop-The-World, 즉 STW라는 작업을 하여 실행 중인 스레드를 제외한 모든 스레드의 작업이 중단됩니다. 이후 어떤 Object를 Garbage로 판단할지 설명을 하겠습니다. GC는 특정 객체가 garbage인지 아닌지 판단하기 위해 Reachability라는 개념을 적용하는데요. 객체에 유효한 레퍼런스가 있다면 Reachable, 없다면 Unreachable로 구분하고 unreachable은 수거합니다. 이 때 Mark and Sweep 방식을 이용합니다. root space로부터 그래프 순회를 통해 각각 어떤 객체를 참조하고 있는지 mark, Unreachable 객체들을 heap에서 제거하는 sweep, 이후 분산된 객체들을 heap의 시작 주소로 모아 압축합니다.(이건 종류에 따라 안할 수도 있다고 합니다)
+먼저 GC를 실행하기 위해 JVM이 애플리케이션의 실행을 멈춥니다. 이는 Stop-The-World, 즉 STW라는 작업을 하여 실행 중인 스레드를 제외한 모든 스레드의 작업이 중단됩니다. 이후 어떤 Object를 Garbage로 판단할지 설명을 하겠습니다. GC는 특정 객체가 garbage인지 아닌지 판단하기 위해 Reachability라는 개념을 적용하는데요. 객체에 유효한 레퍼런스가 있다면 Reachable, 없다면 Unreachable로 구분하고 unreachable은 수거합니다. 이 때 Mark and Sweep 방식을 이용합니다. root space로부터 그래프 순회를 통해 각각 어떤 객체를 참조하고 있는지 mark, Unreachable 객체들을 heap에서 제거하는 sweep, 이후 분산된 객체들을 heap의 시작 주소로 모아 압축합니다.(이건 종류에 따라 안할 수도 있다고 합니다)
 
 ### 추가 설명
 
@@ -44,35 +72,29 @@ Minor GC
 Young 영역은 짧게 살아남는 메모리들이 존재하는 공간입니다. 모든 객체는 처음에는 Young에 생성되는데, 이 공간은 Old에 비해 상대적으로 작기 때문에 메모리를 제거하는데 적은 시간이 걸립니다. 따라서 이 공간에서 메모리 상의 객체를 찾아 제거하는데 적은 시간이 걸립니다.
 
 - 과정
-    
-    처음 생성된 객체는 Eden에 위치
-    
-    Eden영역이 꽉 차게 되면 Minor GC 실행
-    
-    Mark 동작을 통해 reachable 객체 탐색
-    
-    살아남은 객체는 Survivor 영역으로 이동
-    
-    Eden영역에서 unreachable 상태의 객체의 메모리 해제(sweep)
-    
-    살아남은 객체들 age 값 1 증가
-    
-    또 다시 Eden영역이 새로운 객체들로 가득 차면 minor GC 발생하고 mark한다.
-    
-    mark가 된 객체들은 비어있는 Survivor1으로 이동하고 sweep
-    
-    다시 살아남은 모든 객체들은 age가 1씩 증가, 이 과정 반복
-    
+  처음 생성된 객체는 Eden에 위치
+  Eden영역이 꽉 차게 되면 Minor GC 실행
+  Mark 동작을 통해 reachable 객체 탐색
+  살아남은 객체는 Survivor 영역으로 이동
+  Eden영역에서 unreachable 상태의 객체의 메모리 해제(sweep)
+  살아남은 객체들 age 값 1 증가
+  또 다시 Eden영역이 새로운 객체들로 가득 차면 minor GC 발생하고 mark한다.
+  mark가 된 객체들은 비어있는 Survivor1으로 이동하고 sweep
+  다시 살아남은 모든 객체들은 age가 1씩 증가, 이 과정 반복
+
 Major GC(Full GC)
 
-Old 는 길게 살아남는 메모리들이 존재하는 공간입니다. 이들은 Young에서 시작해서 age가 임계값을 달성하여 Old로 이동한(promotion된) 객체들입니다. Major GC는 객체들이 계속 쌓이다가 Old에서 메모리가 부족해지면 발생합니다. Old는 Young보다 상대적으로 큰 공간을 가지고 있어 객체 제거에 많은 시간이 걸립니다. 따라서 STW문제가 발생하게 됩니다. 
+Old 는 길게 살아남는 메모리들이 존재하는 공간입니다. 이들은 Young에서 시작해서 age가 임계값을 달성하여 Old로 이동한(promotion된) 객체들입니다. Major GC는 객체들이 계속 쌓이다가 Old에서 메모리가 부족해지면 발생합니다. Old는 Young보다 상대적으로 큰 공간을 가지고 있어 객체 제거에 많은 시간이 걸립니다. 따라서 STW문제가 발생하게 됩니다.
 
-| GC 종류 | Minor GC | Major GC |
-| --- | --- | --- |
-| 대상 | Young Generation | Old Generation |
+| GC 종류   | Minor GC               | Major GC              |
+| --------- | ---------------------- | --------------------- |
+| 대상      | Young Generation       | Old Generation        |
 | 실행 시점 | Eden 영역이 꽉 찬 경우 | Old 영역이 꽉 찬 경우 |
-| 실행 속도 | 빠름 | 느림 |
+| 실행 속도 | 빠름                   | 느림                  |
+
 </details>
+
+<br/>
 
 </details>
 
@@ -146,6 +168,8 @@ int primitiveInt = wrapperInt; // 자동으로 int로 변환 (오토언박싱)
 
 추상 클래스나 인터페이스는 추상 메소드를 이용한 구현 원칙을 강제한다는 점은 동일하지만, 추상 클래스는 클래스로서 `클래스와 의미있는 연관관계를 구축`할 때 사용하고, 인터페이스는 `클래스와 별도로 구현 객체가 같은 동작`을 한다는 것을 보장하기 위해 사용합니다. </br>
 예시로 동물이라는 추상 클래스를 상속한 앵무새, 고래, 사자라는 클래스가 존재합니다. 동작을 하는 메소드 추가를 위해 수영 동작을 하는 `swimming()` 메소드를 자식 클래스에 추가하려고 합니다. 추후 확장을 위해 추상화 원칙을 따르기 위해 추상 클래스에 추상 메서드인 `swimming()` 메소드를 추가하면 수영을 못하는 앵무새와 사자 클래스도 반드시 해당 메소드를 구현해야한다는 강제성이 생깁니다. 이때 상속에 얽매이지 않는 인터페이스에 추상 메서드를 선언하고 이를 구현하게 하면 `자유로운 타입 묶음을 통해 추상화를 이루게`할 수 있습니다.
+
+<br/>
 
 <img src="https://github.com/user-attachments/assets/beca0fea-3815-4c33-bcdb-5587538cc7e3" />
 
