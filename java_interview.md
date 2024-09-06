@@ -1,62 +1,71 @@
 ## ☕️ 자바 면접 질문 정리
+
 <details>
-<summary>리플렉션에 대해 설명해주세요.</summary>
+<summary>JVM의 런타임 데이터 영역에 대해 설명해주세요</summary>
 
 <br/>
 
-구체적인 클래스 타입을 알지 못해도 그 클래스의 정보(메소드, 타입, 변수, ...) 에 접근할 수 있게 해주는 기법입니다. 리플렉션은 객체를 통해 클래스의 정보를 분석하여 런타임에 클래스의 동작으로 검사하거나 조작할 수 있습니다. 리플렉션은 런타임에 동작하기 때문에, 컴파일 시점에서 오류를 잡을 수 없다는 단점이 존재하므로 사용에 유의해야합니다.
+런타임 데이터 영역은 자바 애플리케이션이 실행되는 동안 JVM 이 사용하는 메모리공간으로 메서드(Method)영역, 힙(Heap) 영역, 스택(Stack), PC 레지스터(Program Counter Register), 네이티브 메서드 스택 (Native Method Stack) 영역으로 나뉩니다. 메서드영역, 힙 영역은 모든 스레드(Thread)가 공유하는 영역이고, 나머지 스택영역, PC 레지스터, 네이티브 메서드 스택은 각 스레드마다 생성되는 개별 영역입니다.
 
-<details>
-<summary>꼬리질문1: 리플렉션이 클래스 정보를 어떻게 가져오는지 설명해주세요.</summary>
+<details style="margin-left: 20px;">
+<summary>런타임 상수 풀(Runtime Constant Pool) 과 주요 역할에 대해 설명해 주세요.</summary>
 
-<br/>
+<br>
+런타임 상수 풀은 자바 클래스 파일에서 컴파일 시 포함된 상수와 참조 정보를 런타임에 관리하는 메모리 영역입니다. 클래스가 JVM에 로드될 때 메서드 영역에 할당되며 숫자, 문자열 등 리터럴 상수와 메서드, 필드, 클래스 참조 정보를 포함합니다. 주요 역할은 메모리 절약입니다. 동일한 상수 리터럴은 상수 풀에 한 번만 저장되고, 프로그램에서 여러 번 사용될 때 재사용됩니다. 특히 문자열 상수 풀을 통해 문자열 리터럴이 여러 번 선언되어도 메모리 낭비를 방지할 수 있습니다.  또한, 런타임에 새로운 참조나 상수가 추가될 수 있으며, 자바의 new 키워드로 생성된 객체는 상수 풀이 아닌 힙 메모리에 저장되지만, new 키워드를 사용한 객체가 리터럴 값을 포함하고 있을 때, 그 리터럴에 대한 참조는 상수 풀에서 가져옵니다. 예를 들어, new String("hello")라는 코드를 실행할 경우, "hello"라는 리터럴 자체는 상수 풀에 저장되어 있고, 그 리터럴을 바탕으로 힙에 새로운 String 객체가 생성됩니다.
+</br>
 
-`Class` 클래스는 자바의 리플렉션 API의 일부로, 클래스와 인터페이스의 메타데이터에 접근할 수 있게 해줍니다. Class 객체는 특정 클래스에 대한 정보를 캡슐화하며, 해당 클래스의 이름, 슈퍼클래스, 구현한 인터페이스, 메서드, 생성자 등의 정보를 제공합니다.<br/>
-JVM의 `클래스 로더`는 실행 시에 필요한 클래스를 동적으로 메모리에 로드하는 역할을 합니다. 먼저 기존에 생성된 클래스 객체가 메모리에 존재하는지 확인하고, 있으면 객체의 참조를 반환하고, 없으면 classpath에 지정된 경로를 따라서 클래스 파일을 찾아 해당 클래스 파일을 읽어서 Class 객체로 변환합니다. 만일 못 찾으면 `ClassNotFoundException` 예외를 띄우게 됩니다.<br/>
-클래스 로더에 의해서 `.class` 파일이 메모리에 로드될 때, 로드된 `.class` 파일의 클래스 정보들을 가져와 Class 객체가 생성되고, 이 객체가 힙 영역에 자동으로 객체화 됩니다. 이로 인해 new 인스턴스화 없이 바로 가져와 사용할 수 있습니다. 이처럼 Class 객체를 활용하여 원하는 클래스의 정보를 가져올 수 있습니다.
-```java
-Class stringClass = String.class;
-System.out.println(stringClass.getName()); // java.lang.String
-```
+### 추가 설명
+
+Runtime Constant Pool 의 역할
+
+**1.클래스 파일의 상수(Constant Pool Table)를 로드**
+
+자바 클래스 파일(.class)에는 컴파일된 상수 정보가 Constant Pool Table이라는 형태로 포함됩니다. Constant Pool Table 은 **리터럴 값(문자열, 숫자 등)**과 메서드, 필드, 클래스에 대한 참조 정보를 포함하고 있습니다.
+
+클래스가 JVM에 의해 로드될 때 이 Constant Pool Table이 Runtime Constant Pool로 옮겨지며, 런타임에 사용됩니다.
+
+**2.리터럴 값과 참조 정보 저장**
+
+상수 리터럴
+
+- 정수, 부동 소수점 숫자, 문자열 등 상수 리터럴
+
+메서드와 필드 참조
+
+- 메서드 호출 시 해당 메서드의 참조를 상수 풀에서 찾습니다. 마찬가지로 필드에 접근할 때도 필드 참조 정보를 상수 풀에서 관리합니다.
+
+클래스와 인터페이스 참조
+
+- 클래스가 처음 로드될 때, 클래스 참조 정보 역시 Runtime Constant Pool에 저장됩니다.
+
+**3.런타임시 동적 상수 할당**
+
+new 키워드로 객체를 생성하거나, 메서드나 필드에 접근할 때, 해당 참조 정보를 동적으로 추가할 수 있습니다. 예를 들어, 문자열 상수 String은 리터럴로 선언될 때 상수 풀에 저장되며, 이미 동일한 리터럴이 존재할 경우 새로운 객체를 생성하지 않고 기존에 있는 상수를 참조합니다.
+
+이를 통해 메모리 사용을 최적화하고, 중복되는 리터럴이 여러 번 생성되지 않도록 합니다.
+
+**4.메모리 절약**
+
+Runtime Constant Pool은 상수와 참조 정보를 공유하여 중복된 상수를 여러 번 생성하지 않도록 합니다. 이는 메모리 절약에 크게 기여하며, 자주 사용되는 상수들에 대해 최적화된 메모리 사용을 보장합니다.
+
+**5.가비지 컬렉션 대상**
+
+Runtime Constant Pool에 저장된 객체나 참조는 가비지 컬렉션의 대상이 될 수 있습니다. 예를 들어, 더 이상 사용되지 않는 참조나 상수는 GC에 의해 메모리에서 해제될 수 있습니다.
 
 </details>
 
-<br/>
-</details>
+### 추가 설명
 
-<details>
-<summary>StringBuilder 와 StringBuffer 의 차이에 대해 설명해주세요</summary>
+<img src="https://github.com/user-attachments/assets/09a9aa2b-f805-4bb1-b02c-dbc1cced12d8">
 
-<br/>
-
-StringBuilder와 StringBuffer는 내부에서 char[] 배열을 이용해 가변 문자열을 처리하는 클래스입니다. 주요 차이점은 동기화 여부입니다. StringBuilder 는 동기화를 지원하지 않는 반면, StringBuffer는 메서드는 synchronized 키워드로 동기화를 지원하기 때문에 멀티스레드 환경에서 안전하게 동작할 수 있습니다. 성능상으로는 StringBuilder 가 동기화가 없으므로 더 빠르게 동작합니다.
-
-<br/>
-
-<details>
-<summary>꼬리질문1: 왜 동기화(synchronized)가 걸려 있으면 느릴까요?</summary>
-
-<br/>
-동기화가 성능에 영향을 미치는 이유는 synchronized 키워드로 인해 자바의 모니터 락(monitor lock) 메커니즘이 동작하기 때문입니다. 동기화된 메서드나 블록에 접근하려면 스레드가 락을 먼저 획득해야 하며, 이 과정에서 락 획득(lock acquisition)과 락 해제(lock release)에 따른 추가적인 연산이 발생합니다. 특히, 멀티스레드 환경에서 여러 스레드가 동시에 같은 자원에 접근할 경우, 락 경쟁(lock contention) 이 발생하여 스레드가 대기하는 시간이 길어지고 성능이 저하됩니다. 또한, 스레드 간 컨텍스트 스위칭(context switching), 캐시 미스(cache miss) 와 같은 운영체제 수준의 오버헤드가 발생해 성능에 부정적인 영향을 미칠 수 있습니다.
-
-</details>
- 
-<details>
-<summary>꼬리질문2: 싱글 스레드로 접근한다는 가정하에선 StringBuilder 와 StringBuffer 의 성능이 똑같을까요?</summary>
-
-<br/>
-싱글 스레드 환경이라도 StringBuffer 는 동기화된 메서드를 사용하기 때문에 동기화 메커니즘에 따른 락 획득과 해제 비용아 발생합니다. 이러한 비용은 불필요한 오버헤드로 작용하여 성능이 저하됩니다. 반면, StringBuilder는 동기화되지 않아 추가적인 락 처리 과정이 없으므로, 싱글스레드 환경에서도 StringBuilder 가 StringBuffer 보다 성능이 더 빠릅니다.
-
-<br/>
-
-</details>
+![image](https://github.com/user-attachments/assets/af5bc8fc-2248-4a49-8498-2fbb62da094f)
 
 <br/>
 
 </details>
 
 <details>
-<summary>Garbage Collection과 Garbage Collector의 차이를 설명해주세요.</summary>
+<summary>JVM의 Garbage Collection과 Garbage Collector의 차이를 설명해주세요.</summary>
 
 <br/>
 
@@ -119,6 +128,65 @@ Old 는 길게 살아남는 메모리들이 존재하는 공간입니다. 이들
 </details>
 
 <br/>
+
+</details>
+
+<details>
+<summary>리플렉션에 대해 설명해주세요.</summary>
+
+<br/>
+
+구체적인 클래스 타입을 알지 못해도 그 클래스의 정보(메소드, 타입, 변수, ...) 에 접근할 수 있게 해주는 기법입니다. 리플렉션은 객체를 통해 클래스의 정보를 분석하여 런타임에 클래스의 동작으로 검사하거나 조작할 수 있습니다. 리플렉션은 런타임에 동작하기 때문에, 컴파일 시점에서 오류를 잡을 수 없다는 단점이 존재하므로 사용에 유의해야합니다.
+
+<details style="margin-left: 20px; display: block">
+ <summary>꼬리질문1: 리플렉션이 클래스 정보를 어떻게 가져오는지 설명해주세요.</summary>
+
+<br/>
+
+`Class` 클래스는 자바의 리플렉션 API의 일부로, 클래스와 인터페이스의 메타데이터에 접근할 수 있게 해줍니다. Class 객체는 특정 클래스에 대한 정보를 캡슐화하며, 해당 클래스의 이름, 슈퍼클래스, 구현한 인터페이스, 메서드, 생성자 등의 정보를 제공합니다.<br/>
+JVM의 `클래스 로더`는 실행 시에 필요한 클래스를 동적으로 메모리에 로드하는 역할을 합니다. 먼저 기존에 생성된 클래스 객체가 메모리에 존재하는지 확인하고, 있으면 객체의 참조를 반환하고, 없으면 classpath에 지정된 경로를 따라서 클래스 파일을 찾아 해당 클래스 파일을 읽어서 Class 객체로 변환합니다. 만일 못 찾으면 `ClassNotFoundException` 예외를 띄우게 됩니다.<br/>
+클래스 로더에 의해서 `.class` 파일이 메모리에 로드될 때, 로드된 `.class` 파일의 클래스 정보들을 가져와 Class 객체가 생성되고, 이 객체가 힙 영역에 자동으로 객체화 됩니다. 이로 인해 new 인스턴스화 없이 바로 가져와 사용할 수 있습니다. 이처럼 Class 객체를 활용하여 원하는 클래스의 정보를 가져올 수 있습니다.
+
+```java
+Class stringClass = String.class;
+System.out.println(stringClass.getName()); // java.lang.String
+```
+
+</details>
+
+<br/>
+</details>
+
+<details>
+<summary>StringBuilder 와 StringBuffer 의 차이에 대해 설명해주세요</summary>
+
+<br/>
+
+StringBuilder와 StringBuffer는 내부에서 char[] 배열을 이용해 가변 문자열을 처리하는 클래스입니다. 주요 차이점은 동기화 여부입니다. StringBuilder 는 동기화를 지원하지 않는 반면, StringBuffer는 메서드는 synchronized 키워드로 동기화를 지원하기 때문에 멀티스레드 환경에서 안전하게 동작할 수 있습니다. 성능상으로는 StringBuilder 가 동기화가 없으므로 더 빠르게 동작합니다.
+
+<br/>
+
+<details>
+<summary>꼬리질문1: 왜 동기화(synchronized)가 걸려 있으면 느릴까요?</summary>
+
+<br/>
+동기화가 성능에 영향을 미치는 이유는 synchronized 키워드로 인해 자바의 모니터 락(monitor lock) 메커니즘이 동작하기 때문입니다. 동기화된 메서드나 블록에 접근하려면 스레드가 락을 먼저 획득해야 하며, 이 과정에서 락 획득(lock acquisition)과 락 해제(lock release)에 따른 추가적인 연산이 발생합니다. 특히, 멀티스레드 환경에서 여러 스레드가 동시에 같은 자원에 접근할 경우, 락 경쟁(lock contention) 이 발생하여 스레드가 대기하는 시간이 길어지고 성능이 저하됩니다. 또한, 스레드 간 컨텍스트 스위칭(context switching), 캐시 미스(cache miss) 와 같은 운영체제 수준의 오버헤드가 발생해 성능에 부정적인 영향을 미칠 수 있습니다.
+
+</details>
+ 
+<details>
+<summary>꼬리질문2: 싱글 스레드로 접근한다는 가정하에선 StringBuilder 와 StringBuffer 의 성능이 똑같을까요?</summary>
+
+<br/>
+싱글 스레드 환경이라도 StringBuffer 는 동기화된 메서드를 사용하기 때문에 동기화 메커니즘에 따른 락 획득과 해제 비용아 발생합니다. 이러한 비용은 불필요한 오버헤드로 작용하여 성능이 저하됩니다. 반면, StringBuilder는 동기화되지 않아 추가적인 락 처리 과정이 없으므로, 싱글스레드 환경에서도 StringBuilder 가 StringBuffer 보다 성능이 더 빠릅니다.
+
+<br/>
+
+</details>
+
+<br/>
+
+</details>
 
 </details>
 
