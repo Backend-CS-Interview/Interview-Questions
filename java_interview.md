@@ -1,14 +1,14 @@
 ## ☕️ 자바 면접 질문 정리
 
 <details>
-<summary>JVM의 런타임 데이터 영역에 대해 설명해주세요</summary>
+<summary>JVM의 런타임 데이터 영역에 대해 설명해주세요.</summary>
 
 <br/>
 
 런타임 데이터 영역은 자바 애플리케이션이 실행되는 동안 JVM 이 사용하는 메모리공간으로 메서드(Method)영역, 힙(Heap) 영역, 스택(Stack), PC 레지스터(Program Counter Register), 네이티브 메서드 스택 (Native Method Stack) 영역으로 나뉩니다. 메서드영역, 힙 영역은 모든 스레드(Thread)가 공유하는 영역이고, 나머지 스택영역, PC 레지스터, 네이티브 메서드 스택은 각 스레드마다 생성되는 개별 영역입니다.
 
 <details style="margin-left: 20px;">
-<summary>런타임 상수 풀(Runtime Constant Pool) 과 주요 역할에 대해 설명해 주세요.</summary>
+<summary>런타임 상수 풀(Runtime Constant Pool) 과 주요 역할에 대해 설명해 주세요</summary>
 
 <br>
 런타임 상수 풀은 자바 클래스 파일에서 컴파일 시 포함된 상수와 참조 정보를 런타임에 관리하는 메모리 영역입니다. 클래스가 JVM에 로드될 때 메서드 영역에 할당되며 숫자, 문자열 등 리터럴 상수와 메서드, 필드, 클래스 참조 정보를 포함합니다. 주요 역할은 메모리 절약입니다. 동일한 상수 리터럴은 상수 풀에 한 번만 저장되고, 프로그램에서 여러 번 사용될 때 재사용됩니다. 특히 문자열 상수 풀을 통해 문자열 리터럴이 여러 번 선언되어도 메모리 낭비를 방지할 수 있습니다.  또한, 런타임에 새로운 참조나 상수가 추가될 수 있으며, 자바의 new 키워드로 생성된 객체는 상수 풀이 아닌 힙 메모리에 저장되지만, new 키워드를 사용한 객체가 리터럴 값을 포함하고 있을 때, 그 리터럴에 대한 참조는 상수 풀에서 가져옵니다. 예를 들어, new String("hello")라는 코드를 실행할 경우, "hello"라는 리터럴 자체는 상수 풀에 저장되어 있고, 그 리터럴을 바탕으로 힙에 새로운 String 객체가 생성됩니다.
@@ -158,7 +158,7 @@ System.out.println(stringClass.getName()); // java.lang.String
 </details>
 
 <details>
-<summary>StringBuilder 와 StringBuffer 의 차이에 대해 설명해주세요</summary>
+<summary>StringBuilder 와 StringBuffer 의 차이에 대해 설명해주세요.</summary>
 
 <br/>
 
@@ -202,7 +202,7 @@ Wrapper 클래스는 기본 데이터타입을 객체로 다루기 위해 자바
 </details>
 
 <details>
-<summary>자바에서 오토박싱과 오토언박싱에 대해 설명해주세요</summary>
+<summary>자바에서 오토박싱과 오토언박싱에 대해 설명해주세요.</summary>
 
 <br/>
 
@@ -239,7 +239,7 @@ int primitiveInt = wrapperInt; // 자동으로 int로 변환 (오토언박싱)
 </details>
 
 <details>
-<summary>기본타입과 래퍼타입의 차이점과 어떤 경우에 기본 타입을 사용해야 할 지 설명해 주세요</summary>
+<summary>기본타입과 래퍼타입의 차이점과 어떤 경우에 기본 타입을 사용해야 할 지 설명해 주세요.</summary>
 
 <br/>
 
