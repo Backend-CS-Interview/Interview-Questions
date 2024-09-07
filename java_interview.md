@@ -1,5 +1,62 @@
 ## ☕️ 자바 면접 질문 정리
 <details>
+<summary>String 타입에서 ==와 equals()의 차이점을 설명해주세요.</summary>
+<br/>
+
+String 변수를 생성할 때는 리터럴을 사용하는 방식과 new 연산자를 사용하는 방식이 있습니다. 리터럴을 사용하게 되면 string constant pool이라는 영역에 값이 존재하게되고, new를 통해 생성하면 heap 영역에 존재하게 됩니다. String을 리터럴로 선언할 경우 내부적으로 String의 intern() 메서드가 호출되게 되고 intern() 메서드는 주어진 문자열이 string constant pool에 존재하는지 확인하고 있으면 그 주소값을 반환하고 없으면 string constant pool에 넣고 새로운 주소값을 반환합니다.
+== 연산자는 비교하는 두 대상의 주소값을 비교하는데 반해 String 클래스의 equals() 메서드는 Objects 클래스의 equals() 메서드를 오버라이딩하여 두 비교대상의 주소 값이 아닌 데이터 값을 비교합니다.
+
+```java
+String str1 = "Hello"; // 문자열 리터럴을 이용한 방식
+String str2 = "Hello";
+
+String str3 = new String("Hello"); // new 연산자를 이용한 방식
+String str4 = new String("Hello");
+
+// 리터럴 문자열 비교
+System.out.println(str1 == str2); // true
+
+// 객체 문자열 비교
+System.out.println(str3 == str4); // false
+System.out.println(str3.equals(str4)); // true
+
+// 리터럴과 객체 문자열 비교
+System.out.println(str1 == str3); // false
+System.out.println(str3.equals(str1)); // true
+```
+
+<details style="margin-left: 20px;">
+<summary>꼬리질문1: equals()를 재정의할 때 hashCode()도 재정의 해야하는 이유를 설명해주세요.</summary>
+<br/>
+
+hashCode 메서드는 객체의 주소 값을 이용해서 해싱 기법을 통해 해시 코드를 만든 후 반환합니다. 엄밀히 말하면 해시코드는 주소값은 아니고, 주소값으로 만든 고유한 숫자값입니다. 
+equals()를 재정의할 때 hashCode()도 재정의 해야하는 이유는 equals()의 결과가 true인 두 객체의 해시코드는 반드시 같아야 한다는 자바의 규칙 때문입니다. 만약 두 메소드를 동시에 재정의하지 않을 시, hash 컬렉션을 사용할 때 문제가 발생할 수 있습니다. equlas()만 재정의하면 두 객체의 해시코드가 다름에도 불구하고 논리적으로 같은 객체라고 판단합니다. 이때 HashSet을 사용하여 객체를 추가할 때 해시코드가 달라서 다른 객체라고 판단하여 중복된 객체가 추가될 수 있습니다. 따라서 equals()를 재정의할 때 hashCode()도 동시에 재정의 해야 합니다.
+
+### 추가 설명 
+위처럼 동작하는 이유는 hash 컬렉션의 객체가 논리적으로 같은지 비교할때 수행하는 과정에서 찾을 수 있습니다. 가장 먼저 데이터가 추가되면, 그 데이터의 hashCode() 리턴 값을 컬렉션에 가지고 있는지 비교합니다. 해시코드가 다르다면 다른 객체라고 판단하고, 만약 해시코드가 같다면 다음으로 equals() 메서드의 리턴 값을 비교하여 true면 논리적으로 같은 객체라고 판단합니다.
+
+</details>
+
+<details style="margin-left: 20px;">
+<summary>꼬리질문2: hashCode()를 잘못 오버라이딩하면 hash 컬렉션의 성능이 떨어질 수 있는데 그 이유를 설명해주세요. </summary>
+<br/>
+
+Objects.hash 메서드는 매개변수로 주어진 값들을 이용해서 고유한 해시 코드를 생성합니다. 즉, 동일한 값을 가지는 객체들의 필드로 해시코드를 생성하면 동일한 해시코드를 얻을 수 있습니다. Objects.hash 메서드는 가변 인자를 받아 처리하기 때문에 내부적으로 배열을 생성하고, for문을 돌면서 각 필드의 해시코드를 계산하여 반환합니다. 이 과정에서 필드의 순서가 반환되는 해시코드에 영향을 끼칩니다. 따라서 배열의 생성과 for문으로 인해 hash 컬렉션의 성능 저하를 야기할 수 있습니다. 
+
+```java
+@Override
+public int hashCode() {
+    return Objects.hash(name); // name 필드의 해시코드를 반환한다.
+}
+```
+</details>
+
+<br/>
+
+</details>
+
+
+<details>
 <summary>리플렉션에 대해 설명해주세요.</summary>
 
 <br/>
