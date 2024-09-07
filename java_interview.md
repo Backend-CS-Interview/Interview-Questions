@@ -52,7 +52,6 @@ public int hashCode() {
 </details>
 
 <br/>
-
 </details>
 
 
@@ -63,7 +62,7 @@ public int hashCode() {
 
 구체적인 클래스 타입을 알지 못해도 그 클래스의 정보(메소드, 타입, 변수, ...) 에 접근할 수 있게 해주는 기법입니다. 리플렉션은 객체를 통해 클래스의 정보를 분석하여 런타임에 클래스의 동작으로 검사하거나 조작할 수 있습니다. 리플렉션은 런타임에 동작하기 때문에, 컴파일 시점에서 오류를 잡을 수 없다는 단점이 존재하므로 사용에 유의해야합니다.
 
-<details>
+<details style="margin-left: 20px;">
 <summary>꼬리질문1: 리플렉션이 클래스 정보를 어떻게 가져오는지 설명해주세요.</summary>
 
 <br/>
@@ -90,7 +89,7 @@ StringBuilder와 StringBuffer는 내부에서 char[] 배열을 이용해 가변 
 
 <br/>
 
-<details>
+<details style="margin-left: 20px;">
 <summary>꼬리질문1: 왜 동기화(synchronized)가 걸려 있으면 느릴까요?</summary>
 
 <br/>
@@ -98,7 +97,7 @@ StringBuilder와 StringBuffer는 내부에서 char[] 배열을 이용해 가변 
 
 </details>
  
-<details>
+<details style="margin-left: 20px;">
 <summary>꼬리질문2: 싱글 스레드로 접근한다는 가정하에선 StringBuilder 와 StringBuffer 의 성능이 똑같을까요?</summary>
 
 <br/>
@@ -121,7 +120,7 @@ StringBuilder와 StringBuffer는 내부에서 char[] 배열을 이용해 가변 
 
 <br/>
 
-<details>
+<details style="margin-left: 20px;">
 <summary>꼬리질문1: 그렇다면 개발자는 가비지콜렉터만 믿고 메모리를 신경쓰지 않아도 되는 것인가요?</summary>
 
 <br/>
@@ -130,7 +129,7 @@ StringBuilder와 StringBuffer는 내부에서 char[] 배열을 이용해 가변 
 
 </details>
 
-<details>
+<details style="margin-left: 20px;">
 <summary>꼬리질문2: 그렇다면 heap의 구조에 대해서 설명해주세요.</summary>
 
 <br/>
@@ -139,7 +138,7 @@ Heap에는 Young영역과 Old영역이 있는데요. Young은 Eden과 Survivor0,
 
 </details>
 
-<details>
+<details style="margin-left: 20px;">
 <summary>꼬리질문3: 가비지 컬렉션의 과정을 설명해주세요.(꼬리질문 2번과 엮어서 생각해주세요)</summary>
 
 <br/>
