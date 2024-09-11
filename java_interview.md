@@ -24,9 +24,11 @@ System.out.println(str3.equals(str4)); // true
 System.out.println(str1 == str3); // false
 System.out.println(str3.equals(str1)); // true
 ```
+<br/>
+</details>
 
-<details style="margin-left: 20px;">
-<summary>꼬리질문1: equals()를 재정의할 때 hashCode()도 재정의 해야하는 이유를 설명해주세요.</summary>
+<details>
+<summary>equals()를 재정의할 때 hashCode()도 재정의 해야하는 이유를 설명해주세요.</summary>
 <br/>
 
 hashCode 메서드는 객체의 주소 값을 이용해서 해싱 기법을 통해 해시 코드를 만든 후 반환합니다. 엄밀히 말하면 해시코드는 주소값은 아니고, 주소값으로 만든 고유한 숫자값입니다. 
@@ -35,10 +37,8 @@ equals()를 재정의할 때 hashCode()도 재정의 해야하는 이유는 equa
 ### 추가 설명 
 위처럼 동작하는 이유는 hash 컬렉션의 객체가 논리적으로 같은지 비교할때 수행하는 과정에서 찾을 수 있습니다. 가장 먼저 데이터가 추가되면, 그 데이터의 hashCode() 리턴 값을 컬렉션에 가지고 있는지 비교합니다. 해시코드가 다르다면 다른 객체라고 판단하고, 만약 해시코드가 같다면 다음으로 equals() 메서드의 리턴 값을 비교하여 true면 논리적으로 같은 객체라고 판단합니다.
 
-</details>
-
 <details style="margin-left: 20px;">
-<summary>꼬리질문2: hashCode()를 잘못 오버라이딩하면 hash 컬렉션의 성능이 떨어질 수 있는데 그 이유를 설명해주세요. </summary>
+<summary>꼬리질문1: hashCode()를 잘못 오버라이딩하면 hash 컬렉션의 성능이 떨어질 수 있는데 그 이유를 설명해주세요. </summary>
 <br/>
 
 Objects.hash 메서드는 매개변수로 주어진 값들을 이용해서 고유한 해시 코드를 생성합니다. 즉, 동일한 값을 가지는 객체들의 필드로 해시코드를 생성하면 동일한 해시코드를 얻을 수 있습니다. Objects.hash 메서드는 가변 인자를 받아 처리하기 때문에 내부적으로 배열을 생성하고, for문을 돌면서 각 필드의 해시코드를 계산하여 반환합니다. 이 과정에서 필드의 순서가 반환되는 해시코드에 영향을 끼칩니다. 따라서 배열의 생성과 for문으로 인해 hash 컬렉션의 성능 저하를 야기할 수 있습니다. 
@@ -50,7 +50,6 @@ public int hashCode() {
 }
 ```
 </details>
-
 <br/>
 </details>
 
