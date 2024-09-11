@@ -1,6 +1,22 @@
 ## ☕️ 자바 면접 질문 정리
 
 <details>
+<summary>HashMap과 Hashtable의 차이점을 설명해주세요.</summary>
+<br/>
+HashMap과 Hashtable의 가장 큰 차이는 Thread-safe입니다. Hashtable의 모든 데이터 변경 메소드는 synchronized로 선언되어 있습니다. 즉 메소드 호출 전 스레드간 동기화 락을 통해 멀티 스레드 환경에서 data의 무결성을 보장해줍니다. 하지만 HashMap의 경우 Thread-safe하지 않기 때문에 멀티 스레드 환경에서 동시에 객체의 데이터를 조작하는 경우 data의 무결성을 보장할 수 없습니다. 하지만 Hashtable은 느리기 때문에, 동기화를 위해서 ConcurrentHashMap을 사용하는 것이 더 좋은 방법 입니다. 이 외의 차이로 HashMap을 key와 value에 null을 허용하지만, Hashtable의 경우 key와 value에 null을 허용하지 않습니다. 
+
+<br/>
+</details>
+
+<details>
+<summary>ConcurrentHashMap가 왜 Hashtable보다 성능적으로 우수한지 설명해주세요. </summary>
+<br/>
+
+Hashtable은 모든 메서드에 synchronized 키워드를 사용하여 전체 객체에 lock을 걸기 때문에, 한 스레드가 메서드를 호출하는 동안 다른 메서드는 모두 대기해야 하고 다른 스레드로 전황하는 컨텍스트 스위칭에서 성능 저하가 발생합니다. 반면, ConcurrentHashMap은 CAS 연산을 사용하여 읽어들인 현재 값이 스레드가 기대한 값과 동일한지 비교하여, 만약 일치한다면 메모리 위치의 값을 새로운 값으로 원자적으로 교체하고, 일치하지 않으면 다른 스레드가 그 사이에 값을 변경했음을 의미하므로 교체를 실패합니다. CAS 연산은 단일 명령어로 처리되기 때문에 해당 연산이 실행되는 동안에는 다른 어떤 연산도 해당 메모리 주소에 접근할 수 없습니다. 또한 CAS 연산을 사용하면 락이 필요 없기 때문에 락을 획득하고 해제하는 비용을 줄일 수 있고, 다른 스레드가 기다릴 필요 없이 계속해서 실행할 수 있습니다. 만약 CAS가 실패하면 해당 스레드는 다시 값을 읽고 새로운 값을 설정하는 과정을 반복합니다. 이 과정은 대기 없이 진행되기 때문에, 다른 스레드가 대기하는 상황을 피할 수 있습니다. 이를 통해 전반적인 처리 속도가 향상됩니다.
+<br/>
+</details>
+
+<details>
 <summary>JAVA의 컴파일 과정을 설명해주세요.</summary>
 
 <br/>
