@@ -1,6 +1,52 @@
 ## ☕️ 자바 면접 질문 정리
 
 <details>
+<summary>Checked Exception과 Unchecked Exception의 차이점을 설명해주세요.</summary>
+<br/>
+
+Checked Exception은 Exception의 하위 예외들 중 RuntimeException을 제외한 모든 예외들을 의미합니다. Checked Exception은 컴파일 시 예외처리를 필수로 해주어야 하며, 해주지 않는다면 컴파일 오류가 발생합니다. 이와 반대로 Unchecked Exception은 RuntimeException과 이를 상속받은 자식 예외들을 가리킵니다. 컴파일 시 예외처리를 해주지 않아도 된다는 것이 특징입니다. 
+
+이 둘의 가장 큰 차이점은 예외 발생 시 트랜잭션 롤백 여부 입니다. Unchecked Exception과 Error는 발생 시 트랜젝션이 롤백됩니다. 하지만 Checked Exception의 경우 예외 발생 시 롤백하지 않습니다. 따라서 Checked Exception을 사용하면서 롤백이 발생하기를 원하는 경우 Checked Exception을 Unchecked Exception으로 바꾸어 주어야 합니다.
+
+```java
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class MemberService {
+
+    private final MemberRepository memberRepository;
+
+    public Member createUncheckedEx(){
+        Member member = new Member("Uncheck");
+        memberRepository.save(member);  // 롤백됨
+        if(true) {
+            throw new RuntimeException();
+        }
+        return member;
+    }
+
+    public Member createCheckedEx() throws IOException {
+        Member member = new Member("Check");
+        memberRepository.save(member);  // 롤백되지 않아서 DB에 저장됨
+        if(true) {
+            throw new IOException();
+        }
+        return member;
+    }
+    public Member createEx() throws Exception {
+        Member member = new Member("Exception");
+        memberRepository.save(member);  // 롤백되지 않아서 DB에 저장됨
+        if(true) {
+            throw new Exception();
+        }
+        return member;
+    }
+}
+```
+<br/>
+</details>
+
+<details>
 <summary>JAVA의 컴파일 과정을 설명해주세요.</summary>
 
 <br/>
