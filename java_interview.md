@@ -311,3 +311,57 @@ int primitiveInt = wrapperInt; // 자동으로 int로 변환 (오토언박싱)
 <br/>
 
 </details>
+
+</details>
+
+<details>
+<summary>자바에서 오버로딩 조건에 대해 설명해 주세요.</summary>
+
+<br/>
+
+자바에서 메서드이름은 같지만 매개변수 타입, 개수 또는 순서가 다를 때 오버로딩이 가능합니다. 매개변수 목록이 다른 경우 메서드 시그니처가 달라지므로 컴파일러는 이를 서로 다른 메서드로 인식합니다. 하지만 반환 타입이나 접근 제어자, 예외는 오버로딩의 기준이 되지 않습니다.
+
+<br/>
+
+### 추가 설명
+
+매개변수의 순서만 달라도 오버로딩이 가능한 것을 유의하자.
+
+```java
+public void print(int x, double y) {
+    System.out.println("int first, then double: " + x + ", " + y);
+}
+
+public void print(double y, int x) {
+    System.out.println("double first, then int: " + y + ", " + x);
+}
+
+public static void main(String[] args) {
+    OverloadingExample ex = new OverloadingExample();
+    ex.print(10, 3.14);    // Calls print(int, double)
+    ex.print(3.14, 10);    // Calls print(double, int)
+}
+```
+
+반환타입은 메서드 시그니처의 일부가 아니기 때문에 메서드를 구분하는 기준이 되지 않는다.
+
+```java
+public int calculate() { return 0; }
+public void calculate() { } // 컴파일 에러 발생: 반환 타입만 다르면 오버로딩 불가능
+```
+
+메서드가 던지는 예외의 종류 또한 메서드 시그니처에 포함되지 않기 때문에 같은 이름과 같은 매개변수 목록을 가진 메서드가 다른 예외를 던진다고 하더라도, 컴파일러는 이를 같은 메서드로 인식한다.
+
+```java
+public void process() throws IOException { }
+public void process() throws SQLException { } // 컴파일 에러 발생: 예외만 다르면 오버로딩 불가능
+```
+
+public, private, protected 같은 접근 제어자도 메서드 시그니처에 포함되지 않기 때문에 메서드가 동일한 시그니처를 가지면서 접근 제어자만 다를 경우, 컴파일 에러가 발생한다.
+
+```java
+public void display() { }
+private void display() { } // 컴파일 에러 발생: 접근 제어자만 다르면 오버로딩 불가능
+```
+
+</details>
