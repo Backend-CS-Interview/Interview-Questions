@@ -1,5 +1,41 @@
 ## ☕️ 자바 면접 질문 정리
 <details>
+<summary>오류(Error)와 예외(Exception)의 차이점을 설명해주세요.</summary>
+
+<br/>
+Error(오류)는 시스템 레벨에서 발생하는 프로그램 코드로 해결할 수 없는 문제를 나타냅니다. 보통은 JVM에서 발생하며, OOM(Out of Memory), StackOverflowError와 같은 비정상적인 상황에서 발생합니다.
+
+Exception(예외)는 프로그램 실행 중 발생할 수 있는 예외적인 조건을 의미하며, 개발자가 코드 내에서 적절히 처리할 수 있습니다.
+
+따라서 Error는 시스템에 의해 발생하는 비가역적인 문제이고, Exception은 코드 실행 중에 발생하는 예측 가능한 문제라 개발자가 코드로 해결할 수 있습니다.
+
+<details>
+<summary>꼬리질문1: 에러와 예외를 구분하는 이유를 설명해주세요.</summary>
+
+<br/>
+시스템의 안정성 면에서 시스템의 개입이 필요한 에러와 달리, 개발자가 대응할 수 있는 예외를 따로 분류하여 처리를 하면 예외로 넘어가는 많은 경우에서 시스템이 안정적으로 동작할 수 있도록 할 수 있습니다. 또한 유지보수적 관점에서는 둘을 구분함으로써 작업을 줄일 수 있다, 즉 비용 절감의 면에서도 구분을 합니다.
+
+<br/>
+
+</details>
+<details>
+<summary>꼬리질문2: 예외의 종류에는 무엇이 있나요?</summary>
+
+<br/>
+예외는 두가지 기준으로 나눌 수 있습니다. 발생하는 시기에 따라 구분하면 컴파일 과정에서 발생하는 IOException, FileNotFound 예외와 런타임에 발생하는 예외, 예를 들어 NPE 등이 있습니다.
+
+또한 Checked Exception, Unchecked Exception으로 나뉩니다. Checked는 컴파일 예외클래스이고 Unchecked는 런타임 예외클래스인데요. 이는 코드적 관점에서 구분됩니다. 이 둘의 핵심적인 차이는 반드시 예외 처리를 해야 하는가? 입니다. Checked는 반드시 예외를 처리해야 하고, Unchecked는 명시적인 처리를 안해도 됩니다.
+
+![image.png](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK9GVB0oHPub5kRARKKXPUNVghP1rnw4Ci5A&s)
+
+위 그림에서 RuntimeException은 Unchecked, Exception은 Checked입니다. Checked Exception이 발생할 것 같다면 try-catch나 throws로 처리를 해야합니다.
+<br/>
+
+</details>
+<br/>
+</details>
+
+<details>
 <summary>리플렉션에 대해 설명해주세요.</summary>
 
 <br/>
