@@ -1,4 +1,5 @@
 ## ☕️ 자바 면접 질문 정리
+
 <details>
 <summary>String 타입에서 ==와 equals()의 차이점을 설명해주세요.</summary>
 <br/>
@@ -53,65 +54,115 @@ public int hashCode() {
 <br/>
 </details>
 
-
 <details>
-<summary>리플렉션에 대해 설명해주세요.</summary>
+<summary>JAVA의 컴파일 과정을 설명해주세요.</summary>
 
 <br/>
+먼저 개발자가 자바 소스코드(.java)를 작성합니다.
 
-구체적인 클래스 타입을 알지 못해도 그 클래스의 정보(메소드, 타입, 변수, ...) 에 접근할 수 있게 해주는 기법입니다. 리플렉션은 객체를 통해 클래스의 정보를 분석하여 런타임에 클래스의 동작으로 검사하거나 조작할 수 있습니다. 리플렉션은 런타임에 동작하기 때문에, 컴파일 시점에서 오류를 잡을 수 없다는 단점이 존재하므로 사용에 유의해야합니다.
+이후에 자바 컴파일러(javac)가 자바 소스파일을 컴파일 합니다. 이 때 나오는 파일은 바이트코드파일(.class)로 컴퓨터가 아직 읽을 수 없는 JVM이 이해할 수 있는 코드입니다.
+
+컴파일된 바이트코드를 JVM의 클래스로더(Class Loader)로 전달합니다.
+
+클래스 로더는 동적로딩을 통해 필요한 클래스들을 로딩 및 링크하여 런타임 데이터 영역, 즉 JVM의 메모리에 올립니다.
+
+실행엔진(Execution Engine) JVM 메모리에 올라온 바이트 코드들을 명령어 단위로 하나씩 가져와서 실행합니다. 이 때 실행 엔진은 두 가지 방식으로 변경합니다.
+
+1. 인터프리터: 바이트 코드 명령어를 하나씩 읽어서 해석하고 실행합니다. 하나하나의 실행은 빠르나, 전체적인 실행 속도가 느리다는 단점을 가집니다.
+
+2. JIT 컴파일러: 인터프리터의 단점을 보완하기 위해 도입된 방식으로 바이트 코드 전체를 컴파일하여 바이너리 코드로 변경하고 이후에는 해당 메서드를 더 이상 인터프리팅하지 않고 바이너리 코드로 직접 실행하는 방식입니다. 바이트 코드 전체가 컴파일된 바이너리 코드를 실행하는 것이기 때문에 전체적인 실행속도는 인터프리팅 방식보다 빠릅니다.
 
 <details style="margin-left: 20px;">
-<summary>꼬리질문1: 리플렉션이 클래스 정보를 어떻게 가져오는지 설명해주세요.</summary>
-
+<summary>꼬리질문1: 클래스 로더의 동작방식을 설명해주세요.</summary>
 <br/>
+로드: 클래스 파일을 가져와서 JVM 메모리에 로드합니다.
 
-`Class` 클래스는 자바의 리플렉션 API의 일부로, 클래스와 인터페이스의 메타데이터에 접근할 수 있게 해줍니다. Class 객체는 특정 클래스에 대한 정보를 캡슐화하며, 해당 클래스의 이름, 슈퍼클래스, 구현한 인터페이스, 메서드, 생성자 등의 정보를 제공합니다.<br/>
-JVM의 `클래스 로더`는 실행 시에 필요한 클래스를 동적으로 메모리에 로드하는 역할을 합니다. 먼저 기존에 생성된 클래스 객체가 메모리에 존재하는지 확인하고, 있으면 객체의 참조를 반환하고, 없으면 classpath에 지정된 경로를 따라서 클래스 파일을 찾아 해당 클래스 파일을 읽어서 Class 객체로 변환합니다. 만일 못 찾으면 `ClassNotFoundException` 예외를 띄우게 됩니다.<br/>
-클래스 로더에 의해서 `.class` 파일이 메모리에 로드될 때, 로드된 `.class` 파일의 클래스 정보들을 가져와 Class 객체가 생성되고, 이 객체가 힙 영역에 자동으로 객체화 됩니다. 이로 인해 new 인스턴스화 없이 바로 가져와 사용할 수 있습니다. 이처럼 Class 객체를 활용하여 원하는 클래스의 정보를 가져올 수 있습니다.
-```java
-Class stringClass = String.class;
-System.out.println(stringClass.getName()); // java.lang.String
-```
+검증: 클래스 로드 전 과정 중에서 가장 복잡하고 시간이 많이 걸리는 과정으로 읽어들인 클래스가 자바 언어 명세 및 JVM에 명시된 대로 구성되어 있는지 검사합니다.
+
+준비: 클래스가 필요로 하는 메모리를 할당합니다.. 필요한 메모리란 클래스에서 정의된 필드, 메서드, 인터페이스들을 나타내는 데이터 구조들 등을 말합니다.
+
+분석: 클래스의 상수 풀 내 모든 심볼릭 레퍼런스를 다이렉트 레퍼런스토 변경합니다.
+
+초기화: 클래스 변수들을 적절한 값으로 초기화합니다.(static 필드들을 설정된 값으로 초기화 등)
 
 </details>
-
-<br/>
-</details>
-
-<details>
-<summary>StringBuilder 와 StringBuffer 의 차이에 대해 설명해주세요</summary>
-
-<br/>
-
-StringBuilder와 StringBuffer는 내부에서 char[] 배열을 이용해 가변 문자열을 처리하는 클래스입니다. 주요 차이점은 동기화 여부입니다. StringBuilder 는 동기화를 지원하지 않는 반면, StringBuffer는 메서드는 synchronized 키워드로 동기화를 지원하기 때문에 멀티스레드 환경에서 안전하게 동작할 수 있습니다. 성능상으로는 StringBuilder 가 동기화가 없으므로 더 빠르게 동작합니다.
-
-<br/>
 
 <details style="margin-left: 20px;">
-<summary>꼬리질문1: 왜 동기화(synchronized)가 걸려 있으면 느릴까요?</summary>
+<summary>꼬리질문2: 그렇다면 언제 인터프리터를 사용하고 언제 JIT 컴파일러가 사용되나요?</summary>
 
 <br/>
-동기화가 성능에 영향을 미치는 이유는 synchronized 키워드로 인해 자바의 모니터 락(monitor lock) 메커니즘이 동작하기 때문입니다. 동기화된 메서드나 블록에 접근하려면 스레드가 락을 먼저 획득해야 하며, 이 과정에서 락 획득(lock acquisition)과 락 해제(lock release)에 따른 추가적인 연산이 발생합니다. 특히, 멀티스레드 환경에서 여러 스레드가 동시에 같은 자원에 접근할 경우, 락 경쟁(lock contention) 이 발생하여 스레드가 대기하는 시간이 길어지고 성능이 저하됩니다. 또한, 스레드 간 컨텍스트 스위칭(context switching), 캐시 미스(cache miss) 와 같은 운영체제 수준의 오버헤드가 발생해 성능에 부정적인 영향을 미칠 수 있습니다.
+인터프리터는 처음 프로그램이 실행될 때 사용되어 바이트코드를 명령어 단위로 해석하고 실행합니다. 프로그램 실행 중 특정 코드(특히 자주 호출되는 메소드나 루프)가 핫스팟으로 식별되면, 그 코드에 대해 JIT컴파일러가 기계어로 컴파일하여 성능을 최적화합니다.
 
 </details>
- 
-<details style="margin-left: 20px;">
-<summary>꼬리질문2: 싱글 스레드로 접근한다는 가정하에선 StringBuilder 와 StringBuffer 의 성능이 똑같을까요?</summary>
-
 <br/>
-싱글 스레드 환경이라도 StringBuffer 는 동기화된 메서드를 사용하기 때문에 동기화 메커니즘에 따른 락 획득과 해제 비용아 발생합니다. 이러한 비용은 불필요한 오버헤드로 작용하여 성능이 저하됩니다. 반면, StringBuilder는 동기화되지 않아 추가적인 락 처리 과정이 없으므로, 싱글스레드 환경에서도 StringBuilder 가 StringBuffer 보다 성능이 더 빠릅니다.
-
-<br/>
-
-</details>
-
-<br/>
-
 </details>
 
 <details>
-<summary>Garbage Collection과 Garbage Collector의 차이를 설명해주세요.</summary>
+<summary>JVM의 런타임 데이터 영역에 대해 설명해주세요.</summary>
+
+<br/>
+
+런타임 데이터 영역은 자바 애플리케이션이 실행되는 동안 JVM 이 사용하는 메모리공간으로 메서드(Method)영역, 힙(Heap) 영역, 스택(Stack), PC 레지스터(Program Counter Register), 네이티브 메서드 스택 (Native Method Stack) 영역으로 나뉩니다. 메서드영역, 힙 영역은 모든 스레드(Thread)가 공유하는 영역이고, 나머지 스택영역, PC 레지스터, 네이티브 메서드 스택은 각 스레드마다 생성되는 개별 영역입니다.
+
+<details style="margin-left: 20px;">
+<summary>런타임 상수 풀(Runtime Constant Pool) 과 주요 역할에 대해 설명해 주세요</summary>
+
+<br>
+런타임 상수 풀은 자바 클래스 파일에서 컴파일 시 포함된 상수와 참조 정보를 런타임에 관리하는 메모리 영역입니다. 클래스가 JVM에 로드될 때 메서드 영역에 할당되며 숫자, 문자열 등 리터럴 상수와 메서드, 필드, 클래스 참조 정보를 포함합니다. 주요 역할은 메모리 절약입니다. 동일한 상수 리터럴은 상수 풀에 한 번만 저장되고, 프로그램에서 여러 번 사용될 때 재사용됩니다. 특히 문자열 상수 풀을 통해 문자열 리터럴이 여러 번 선언되어도 메모리 낭비를 방지할 수 있습니다.  또한, 런타임에 새로운 참조나 상수가 추가될 수 있으며, 자바의 new 키워드로 생성된 객체는 상수 풀이 아닌 힙 메모리에 저장되지만, new 키워드를 사용한 객체가 리터럴 값을 포함하고 있을 때, 그 리터럴에 대한 참조는 상수 풀에서 가져옵니다. 예를 들어, new String("hello")라는 코드를 실행할 경우, "hello"라는 리터럴 자체는 상수 풀에 저장되어 있고, 그 리터럴을 바탕으로 힙에 새로운 String 객체가 생성됩니다.
+</br>
+
+### 추가 설명
+
+Runtime Constant Pool 의 역할
+
+**1.클래스 파일의 상수(Constant Pool Table)를 로드**
+
+자바 클래스 파일(.class)에는 컴파일된 상수 정보가 Constant Pool Table이라는 형태로 포함됩니다. Constant Pool Table 은 **리터럴 값(문자열, 숫자 등)**과 메서드, 필드, 클래스에 대한 참조 정보를 포함하고 있습니다.
+
+클래스가 JVM에 의해 로드될 때 이 Constant Pool Table이 Runtime Constant Pool로 옮겨지며, 런타임에 사용됩니다.
+
+**2.리터럴 값과 참조 정보 저장**
+
+상수 리터럴
+
+- 정수, 부동 소수점 숫자, 문자열 등 상수 리터럴
+
+메서드와 필드 참조
+
+- 메서드 호출 시 해당 메서드의 참조를 상수 풀에서 찾습니다. 마찬가지로 필드에 접근할 때도 필드 참조 정보를 상수 풀에서 관리합니다.
+
+클래스와 인터페이스 참조
+
+- 클래스가 처음 로드될 때, 클래스 참조 정보 역시 Runtime Constant Pool에 저장됩니다.
+
+**3.런타임시 동적 상수 할당**
+
+new 키워드로 객체를 생성하거나, 메서드나 필드에 접근할 때, 해당 참조 정보를 동적으로 추가할 수 있습니다. 예를 들어, 문자열 상수 String은 리터럴로 선언될 때 상수 풀에 저장되며, 이미 동일한 리터럴이 존재할 경우 새로운 객체를 생성하지 않고 기존에 있는 상수를 참조합니다.
+
+이를 통해 메모리 사용을 최적화하고, 중복되는 리터럴이 여러 번 생성되지 않도록 합니다.
+
+**4.메모리 절약**
+
+Runtime Constant Pool은 상수와 참조 정보를 공유하여 중복된 상수를 여러 번 생성하지 않도록 합니다. 이는 메모리 절약에 크게 기여하며, 자주 사용되는 상수들에 대해 최적화된 메모리 사용을 보장합니다.
+
+**5.가비지 컬렉션 대상**
+
+Runtime Constant Pool에 저장된 객체나 참조는 가비지 컬렉션의 대상이 될 수 있습니다. 예를 들어, 더 이상 사용되지 않는 참조나 상수는 GC에 의해 메모리에서 해제될 수 있습니다.
+
+</details>
+
+### 추가 설명
+
+<img src="https://github.com/user-attachments/assets/09a9aa2b-f805-4bb1-b02c-dbc1cced12d8">
+
+![image](https://github.com/user-attachments/assets/af5bc8fc-2248-4a49-8498-2fbb62da094f)
+
+<br/>
+
+</details>
+
+<details>
+<summary>JVM의 Garbage Collection과 Garbage Collector의 차이를 설명해주세요.</summary>
 
 <br/>
 
@@ -178,6 +229,65 @@ Old 는 길게 살아남는 메모리들이 존재하는 공간입니다. 이들
 </details>
 
 <details>
+<summary>리플렉션에 대해 설명해주세요.</summary>
+
+<br/>
+
+구체적인 클래스 타입을 알지 못해도 그 클래스의 정보(메소드, 타입, 변수, ...) 에 접근할 수 있게 해주는 기법입니다. 리플렉션은 객체를 통해 클래스의 정보를 분석하여 런타임에 클래스의 동작으로 검사하거나 조작할 수 있습니다. 리플렉션은 런타임에 동작하기 때문에, 컴파일 시점에서 오류를 잡을 수 없다는 단점이 존재하므로 사용에 유의해야합니다.
+
+<details style="margin-left: 20px; display: block">
+ <summary>꼬리질문1: 리플렉션이 클래스 정보를 어떻게 가져오는지 설명해주세요.</summary>
+
+<br/>
+
+`Class` 클래스는 자바의 리플렉션 API의 일부로, 클래스와 인터페이스의 메타데이터에 접근할 수 있게 해줍니다. Class 객체는 특정 클래스에 대한 정보를 캡슐화하며, 해당 클래스의 이름, 슈퍼클래스, 구현한 인터페이스, 메서드, 생성자 등의 정보를 제공합니다.<br/>
+JVM의 `클래스 로더`는 실행 시에 필요한 클래스를 동적으로 메모리에 로드하는 역할을 합니다. 먼저 기존에 생성된 클래스 객체가 메모리에 존재하는지 확인하고, 있으면 객체의 참조를 반환하고, 없으면 classpath에 지정된 경로를 따라서 클래스 파일을 찾아 해당 클래스 파일을 읽어서 Class 객체로 변환합니다. 만일 못 찾으면 `ClassNotFoundException` 예외를 띄우게 됩니다.<br/>
+클래스 로더에 의해서 `.class` 파일이 메모리에 로드될 때, 로드된 `.class` 파일의 클래스 정보들을 가져와 Class 객체가 생성되고, 이 객체가 힙 영역에 자동으로 객체화 됩니다. 이로 인해 new 인스턴스화 없이 바로 가져와 사용할 수 있습니다. 이처럼 Class 객체를 활용하여 원하는 클래스의 정보를 가져올 수 있습니다.
+
+```java
+Class stringClass = String.class;
+System.out.println(stringClass.getName()); // java.lang.String
+```
+
+</details>
+
+<br/>
+</details>
+
+<details>
+<summary>StringBuilder 와 StringBuffer 의 차이에 대해 설명해주세요.</summary>
+
+<br/>
+
+StringBuilder와 StringBuffer는 내부에서 char[] 배열을 이용해 가변 문자열을 처리하는 클래스입니다. 주요 차이점은 동기화 여부입니다. StringBuilder 는 동기화를 지원하지 않는 반면, StringBuffer는 메서드는 synchronized 키워드로 동기화를 지원하기 때문에 멀티스레드 환경에서 안전하게 동작할 수 있습니다. 성능상으로는 StringBuilder 가 동기화가 없으므로 더 빠르게 동작합니다.
+
+<br/>
+
+<details style="margin-left: 20px;">
+<summary>꼬리질문1: 왜 동기화(synchronized)가 걸려 있으면 느릴까요?</summary>
+
+<br/>
+동기화가 성능에 영향을 미치는 이유는 synchronized 키워드로 인해 자바의 모니터 락(monitor lock) 메커니즘이 동작하기 때문입니다. 동기화된 메서드나 블록에 접근하려면 스레드가 락을 먼저 획득해야 하며, 이 과정에서 락 획득(lock acquisition)과 락 해제(lock release)에 따른 추가적인 연산이 발생합니다. 특히, 멀티스레드 환경에서 여러 스레드가 동시에 같은 자원에 접근할 경우, 락 경쟁(lock contention) 이 발생하여 스레드가 대기하는 시간이 길어지고 성능이 저하됩니다. 또한, 스레드 간 컨텍스트 스위칭(context switching), 캐시 미스(cache miss) 와 같은 운영체제 수준의 오버헤드가 발생해 성능에 부정적인 영향을 미칠 수 있습니다.
+
+</details>
+ 
+<details style="margin-left: 20px;">
+<summary>꼬리질문2: 싱글 스레드로 접근한다는 가정하에선 StringBuilder 와 StringBuffer 의 성능이 똑같을까요?</summary>
+
+<br/>
+싱글 스레드 환경이라도 StringBuffer 는 동기화된 메서드를 사용하기 때문에 동기화 메커니즘에 따른 락 획득과 해제 비용아 발생합니다. 이러한 비용은 불필요한 오버헤드로 작용하여 성능이 저하됩니다. 반면, StringBuilder는 동기화되지 않아 추가적인 락 처리 과정이 없으므로, 싱글스레드 환경에서도 StringBuilder 가 StringBuffer 보다 성능이 더 빠릅니다.
+
+<br/>
+
+</details>
+
+<br/>
+
+</details>
+
+</details>
+
+<details>
 <summary>자바의 Wrapper 클래스는 무엇이며, 왜 사용하나요?</summary>
 
 <br/>
@@ -189,7 +299,7 @@ Wrapper 클래스는 기본 데이터타입을 객체로 다루기 위해 자바
 </details>
 
 <details>
-<summary>자바에서 오토박싱과 오토언박싱에 대해 설명해주세요</summary>
+<summary>자바에서 오토박싱과 오토언박싱에 대해 설명해주세요.</summary>
 
 <br/>
 
@@ -226,7 +336,7 @@ int primitiveInt = wrapperInt; // 자동으로 int로 변환 (오토언박싱)
 </details>
 
 <details>
-<summary>기본타입과 래퍼타입의 차이점과 어떤 경우에 기본 타입을 사용해야 할 지 설명해 주세요</summary>
+<summary>기본타입과 래퍼타입의 차이점과 어떤 경우에 기본 타입을 사용해야 할 지 설명해 주세요.</summary>
 
 <br/>
 
@@ -253,5 +363,86 @@ int primitiveInt = wrapperInt; // 자동으로 int로 변환 (오토언박싱)
 <img src="https://github.com/user-attachments/assets/beca0fea-3815-4c33-bcdb-5587538cc7e3" />
 
 <br/>
+
+</details>
+
+<details>
+<summary>자바에서 오버로딩 조건에 대해 설명해 주세요.</summary>
+
+<br/>
+
+자바 컴파일러는 메서드 시그니처를 바탕으로 호출할 메서드를 결정합니다. 따라서 메서드이름이 같더라도, 매개변수 타입, 개수, 순서가 달라지면 메서드 시그니처가 달라지므로 컴파일러는 이를 서로 다른 메서드로 인식해 오버로딩이 가능해집니다. 반면 반환 타입이나 접근 제어자, 예외는 오버로딩의 기준이 되지 않습니다.
+
+<br/>
+
+### 추가 설명
+
+매개변수의 순서만 달라도 오버로딩이 가능한 것을 유의하자.
+
+```java
+public void print(int x, double y) {
+    System.out.println("int first, then double: " + x + ", " + y);
+}
+
+public void print(double y, int x) {
+    System.out.println("double first, then int: " + y + ", " + x);
+}
+
+public static void main(String[] args) {
+    OverloadingExample ex = new OverloadingExample();
+    ex.print(10, 3.14);    // Calls print(int, double)
+    ex.print(3.14, 10);    // Calls print(double, int)
+}
+```
+
+반환타입은 메서드 시그니처의 일부가 아니기 때문에 메서드를 구분하는 기준이 되지 않는다.
+
+```java
+public int calculate() { return 0; }
+public void calculate() { } // 컴파일 에러 발생: 반환 타입만 다르면 오버로딩 불가능
+```
+
+메서드가 던지는 예외의 종류 또한 메서드 시그니처에 포함되지 않기 때문에 같은 이름과 같은 매개변수 목록을 가진 메서드가 다른 예외를 던진다고 하더라도, 컴파일러는 이를 같은 메서드로 인식한다.
+
+```java
+public void process() throws IOException { }
+public void process() throws SQLException { } // 컴파일 에러 발생: 예외만 다르면 오버로딩 불가능
+```
+
+public, private, protected 같은 접근 제어자도 메서드 시그니처에 포함되지 않기 때문에 메서드가 동일한 시그니처를 가지면서 접근 제어자만 다를 경우, 컴파일 에러가 발생한다.
+
+```java
+public void display() { }
+private void display() { } // 컴파일 에러 발생: 접근 제어자만 다르면 오버로딩 불가능
+```
+
+</details>
+
+<details>
+<summary>자바의 메서드 시그니처에 대해 설명해주세요.</summary>
+
+<br/>
+자바에서 메서드 시그니처는 메서드를 고유하게 식별하는 요소로, 메서드 이름과 매개변수 목록(타입, 개수, 순서)으로 구성됩니다. 메서드 시그니처는 메서드를 호출할 때 컴파일러가 어떤 메서드를 호출해야 할지 결정하는 기준이 됩니다.
+
+<br/>
+
+<details style="margin-left: 20px; display: block">
+<summary>반환 타입이나 예외가 메서드 시그니처에 포함되지 않는 이유를 설명해 주세요.</summary>
+
+<br>
+메서드 시그니처는 컴파일러가 호출할 메서드를 식별하는 기준입니다. 반환 타입의 경우 메서드 호출 후에 값을 받을 때만 사용되므로, 메서드를 호출할 때 메서드 이름과 매개변수 목록은 동일한데 반환 타입만 다르다면 컴파일러는 어떤 메서드를 호출해야 할지 결정할 수 없습니다. 예외(throws)는 메서드 호출 시 발생할 수 있는 오류를 정의하는 부분이지만, 메서드의 실행과정에서 발생할 수 있는 사항이기 때문에 메서드의 식별에는 적절한 기준이 될 수 없습니다.
+
+<br>
+
+</details>
+
+### 추가 설명
+
+1.메서드 이름  
+2.매개변수 목록 (타입, 개수, 순서)
+
+반환 타입, 예외 목록, 접근 제어자는 메서드 시그니처에 포함되지 않으므로, 컴파일러는 이를 기준으로 메서드를 구분하지 않는다.
+
+오버라이딩 시에는 상위 클래스와 정확히 동일한 시그니처를 가져야 한다.
 
 </details>
