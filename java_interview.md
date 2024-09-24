@@ -1,49 +1,4 @@
 ## ☕️ 자바 면접 질문 정리
-<<<<<<< HEAD
-<details>
-<summary>오류(Error)와 예외(Exception)의 차이점을 설명해주세요.</summary>
-
-<br/>
-Error(오류)는 시스템 레벨에서 발생하는 프로그램 코드로 해결할 수 없는 문제를 나타냅니다. 보통은 JVM에서 발생하며, OOM(Out of Memory), StackOverflowError와 같은 비정상적인 상황에서 발생합니다.
-
-Exception(예외)는 프로그램 실행 중 발생할 수 있는 예외적인 조건을 의미하며, 개발자가 코드 내에서 적절히 처리할 수 있습니다.
-
-따라서 Error는 시스템에 의해 발생하는 비가역적인 문제이고, Exception은 코드 실행 중에 발생하는 예측 가능한 문제라 개발자가 코드로 해결할 수 있습니다.
-
-<details>
-<summary>꼬리질문1: 에러와 예외를 구분하는 이유를 설명해주세요.</summary>
-
-<br/>
-시스템의 안정성 면에서 시스템의 개입이 필요한 에러와 달리, 개발자가 대응할 수 있는 예외를 따로 분류하여 처리를 하면 예외로 넘어가는 많은 경우에서 시스템이 안정적으로 동작할 수 있도록 할 수 있습니다. 또한 유지보수적 관점에서는 둘을 구분함으로써 작업을 줄일 수 있다, 즉 비용 절감의 면에서도 구분을 합니다.
-
-<br/>
-
-</details>
-<details>
-<summary>꼬리질문2: 예외의 종류에는 무엇이 있나요?</summary>
-
-<br/>
-예외는 두가지 기준으로 나눌 수 있습니다. 발생하는 시기에 따라 구분하면 컴파일 과정에서 발생하는 IOException, FileNotFound 예외와 런타임에 발생하는 예외, 예를 들어 NPE 등이 있습니다.
-
-또한 Checked Exception, Unchecked Exception으로 나뉩니다. Checked는 컴파일 예외클래스이고 Unchecked는 런타임 예외클래스인데요. 이는 코드적 관점에서 구분됩니다. 이 둘의 핵심적인 차이는 반드시 예외 처리를 해야 하는가? 입니다. Checked는 반드시 예외를 처리해야 하고, Unchecked는 명시적인 처리를 안해도 됩니다.
-
-![image.png](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK9GVB0oHPub5kRARKKXPUNVghP1rnw4Ci5A&s)
-
-위 그림에서 RuntimeException은 Unchecked, Exception은 Checked입니다. Checked Exception이 발생할 것 같다면 try-catch나 throws로 처리를 해야합니다.
-<br/>
-
-</details>
-<br/>
-</details>
-
-<details>
-<summary>리플렉션에 대해 설명해주세요.</summary>
-
-<br/>
-
-구체적인 클래스 타입을 알지 못해도 그 클래스의 정보(메소드, 타입, 변수, ...) 에 접근할 수 있게 해주는 기법입니다. 리플렉션은 객체를 통해 클래스의 정보를 분석하여 런타임에 클래스의 동작으로 검사하거나 조작할 수 있습니다. 리플렉션은 런타임에 동작하기 때문에, 컴파일 시점에서 오류를 잡을 수 없다는 단점이 존재하므로 사용에 유의해야합니다.
-=======
->>>>>>> 97f4d0789ded37e849eed66a375a5458f38746a7
 
 <details>
 <summary>HashMap과 Hashtable의 차이점을 설명해주세요.</summary>
@@ -61,6 +16,45 @@ Hashtable은 모든 메서드에 synchronized 키워드를 사용하여 전체 �
 
 <br/>
 </details>
+
+
+<details>
+<summary>오류(Error)와 예외(Exception)의 차이점을 설명해주세요.</summary>
+
+<br/>
+Error(오류)는 시스템 레벨에서 발생하는 프로그램 코드로 해결할 수 없는 문제를 나타냅니다. 보통은 JVM에서 발생하며, OOM(Out of Memory), StackOverflowError와 같은 비정상적인 상황에서 발생합니다.
+
+Exception(예외)는 프로그램 실행 중 발생할 수 있는 예외적인 조건을 의미하며, 개발자가 코드 내에서 적절히 처리할 수 있습니다.
+
+따라서 Error는 시스템에 의해 발생하는 비가역적인 문제이고, Exception은 코드 실행 중에 발생하는 예측 가능한 문제라 개발자가 코드로 해결할 수 있습니다.
+
+<details style="margin-left: 20px;">
+<summary>꼬리질문1: 에러와 예외를 구분하는 이유를 설명해주세요.</summary>
+
+<br/>
+시스템의 안정성 면에서 시스템의 개입이 필요한 에러와 달리, 개발자가 대응할 수 있는 예외를 따로 분류하여 처리를 하면 예외로 넘어가는 많은 경우에서 시스템이 안정적으로 동작할 수 있도록 할 수 있습니다. 또한 유지보수적 관점에서는 둘을 구분함으로써 작업을 줄일 수 있다, 즉 비용 절감의 면에서도 구분을 합니다.
+
+<br/>
+</details>
+
+
+<details style="margin-left: 20px;">
+<summary>꼬리질문2: 예외의 종류에는 무엇이 있나요?</summary>
+
+<br/>
+예외는 두가지 기준으로 나눌 수 있습니다. 발생하는 시기에 따라 구분하면 컴파일 과정에서 발생하는 IOException, FileNotFound 예외와 런타임에 발생하는 예외, 예를 들어 NPE 등이 있습니다.
+
+또한 Checked Exception, Unchecked Exception으로 나뉩니다. Checked는 컴파일 예외클래스이고 Unchecked는 런타임 예외클래스인데요. 이는 코드적 관점에서 구분됩니다. 이 둘의 핵심적인 차이는 반드시 예외 처리를 해야 하는가? 입니다. Checked는 반드시 예외를 처리해야 하고, Unchecked는 명시적인 처리를 안해도 됩니다.
+
+![image.png](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK9GVB0oHPub5kRARKKXPUNVghP1rnw4Ci5A&s)
+
+위 그림에서 RuntimeException은 Unchecked, Exception은 Checked입니다. Checked Exception이 발생할 것 같다면 try-catch나 throws로 처리를 해야합니다.
+<br/>
+</details>
+
+<br/>
+</details>
+
 
 <details>
 <summary>자바는 WORA(Write Once, Run Anywhere)라고 하는데 그 이유를 알려주세요.</summary>
@@ -134,7 +128,7 @@ public int hashCode() {
 }
 ```
 </details>
->>>>>>> 97f4d0789ded37e849eed66a375a5458f38746a7
+
 <br/>
 </details>
 
@@ -189,7 +183,7 @@ public int hashCode() {
 런타임 데이터 영역은 자바 애플리케이션이 실행되는 동안 JVM 이 사용하는 메모리공간으로 메서드(Method)영역, 힙(Heap) 영역, 스택(Stack), PC 레지스터(Program Counter Register), 네이티브 메서드 스택 (Native Method Stack) 영역으로 나뉩니다. 메서드영역, 힙 영역은 모든 스레드(Thread)가 공유하는 영역이고, 나머지 스택영역, PC 레지스터, 네이티브 메서드 스택은 각 스레드마다 생성되는 개별 영역입니다.
 
 <details style="margin-left: 20px;">
-<summary>런타임 상수 풀(Runtime Constant Pool) 과 주요 역할에 대해 설명해 주세요</summary>
+<summary>꼬리질문1: 런타임 상수 풀(Runtime Constant Pool) 과 주요 역할에 대해 설명해 주세요</summary>
 
 <br>
 런타임 상수 풀은 자바 클래스 파일에서 컴파일 시 포함된 상수와 참조 정보를 런타임에 관리하는 메모리 영역입니다. 클래스가 JVM에 로드될 때 메서드 영역에 할당되며 숫자, 문자열 등 리터럴 상수와 메서드, 필드, 클래스 참조 정보를 포함합니다. 주요 역할은 메모리 절약입니다. 동일한 상수 리터럴은 상수 풀에 한 번만 저장되고, 프로그램에서 여러 번 사용될 때 재사용됩니다. 특히 문자열 상수 풀을 통해 문자열 리터럴이 여러 번 선언되어도 메모리 낭비를 방지할 수 있습니다.  또한, 런타임에 새로운 참조나 상수가 추가될 수 있으며, 자바의 new 키워드로 생성된 객체는 상수 풀이 아닌 힙 메모리에 저장되지만, new 키워드를 사용한 객체가 리터럴 값을 포함하고 있을 때, 그 리터럴에 대한 참조는 상수 풀에서 가져옵니다. 예를 들어, new String("hello")라는 코드를 실행할 경우, "hello"라는 리터럴 자체는 상수 풀에 저장되어 있고, 그 리터럴을 바탕으로 힙에 새로운 String 객체가 생성됩니다.
@@ -511,7 +505,7 @@ private void display() { } // 컴파일 에러 발생: 접근 제어자만 다�
 <br/>
 
 <details style="margin-left: 20px; display: block">
-<summary>반환 타입이나 예외가 메서드 시그니처에 포함되지 않는 이유를 설명해 주세요.</summary>
+<summary>꼬리질문1: 반환 타입이나 예외가 메서드 시그니처에 포함되지 않는 이유를 설명해 주세요.</summary>
 
 <br>
 메서드 시그니처는 컴파일러가 호출할 메서드를 식별하는 기준입니다. 반환 타입의 경우 메서드 호출 후에 값을 받을 때만 사용되므로, 메서드를 호출할 때 메서드 이름과 매개변수 목록은 동일한데 반환 타입만 다르다면 컴파일러는 어떤 메서드를 호출해야 할지 결정할 수 없습니다. 예외(throws)는 메서드 호출 시 발생할 수 있는 오류를 정의하는 부분이지만, 메서드의 실행과정에서 발생할 수 있는 사항이기 때문에 메서드의 식별에는 적절한 기준이 될 수 없습니다.
