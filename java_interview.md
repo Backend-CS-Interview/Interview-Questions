@@ -1,6 +1,39 @@
 ## ☕️ 자바 면접 질문 정리
 
 <details>
+
+<summary>jdk와 jre의 차이를 설명해주세요.</summary>
+
+<br/>
+JDK는 Java Development Kit의 약자로 개발자들이 자바로 개발하는데 사용되는 SDK라고 생각하면 됩니다. 이 안에는 자바 개발 시 필요한 라이브러리들과 javac, javadoc 등의 개발 도구들이 포함되고, 개발할 때 자바 프로그램을 실행시켜야 하기에 JRE, JVM도 포함되어 있습니다.
+
+JRE는 Java Runtime Environment의 약자로, JVM과 자바 프로그램을 실행할 때 필요한 라이브러리 API를 함께 묶어서 배포되는 패키지입니다. 이외에도 런타임 환경에서 사용하는 프로퍼티 세팅이나 리소스 파일(jar 파일)을 가지고 있습니다.
+
+결론적으로 Java로 프로그램을 개발할 때 JDK가 필요하고, 실행할 때 JRE가 필요하다고 할 수 있습니다.
+
+<details style = "margin-left: 20px;">
+<summary> 꼬리질문1: SDK는 무엇인가요?</summary>
+
+<br/>
+Software Development Kit의 약자로 하드웨어 플랫폼, 운영체제, 혹은 프로그래밍 언어 제작사가 제공하는 툴입니다. SDK의 또 다른 예시로는 안드로이드 스튜디오가 있고, 이를 통해 안드로이드 앱 개발을 할 수 있습니다.
+<br/>
+
+</details>
+
+<details style = "margin-left: 20px;">
+<summary> 꼬리질문2: JDK 종류 중에 알고 있는 것이 있다면 말씀하시고 설명해주세요.</summary>
+
+<br/>
+대표적으로 Oracle JDK와 Open JDK가 있습니다. 
+Oracle JDK는 Java8까지는 무료로 제공했는데 Java11부터 상업적 용도로 사용 시 유료로 사용할 수 있고, 모니터링 도구, 성능 분석 도구 등이 추가되어 있습니다.
+OpenJDK는 무료로 사용할 수 있고 커뮤니티에서 지원하며 상용 기능은 존재하지 않습니다.
+<br/>
+
+</details>
+
+</details>
+
+<details>
 <summary>Checked Exception과 Unchecked Exception의 차이점을 설명해주세요.</summary>
 <br/>
 
