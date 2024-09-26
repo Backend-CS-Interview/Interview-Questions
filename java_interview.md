@@ -1,6 +1,83 @@
 ## ☕️ 자바 면접 질문 정리
 
 <details>
+<summary>Java에서 다형성을 설명해주세요.</summary>
+
+<br/>
+다형성이란 여러 가지 형태를 가질 수 있는 성질을 의미합니다. 자바에서는 한 타입의 참조 변수로 여러 타입의 객체를 참조할 수 있게 함으로써 다형성을 구현할 수 있습니다.
+
+<br/>
+<details>
+<summary>다형성 구현 방법을 설명해주세요.</summary>
+<br/>
+다형성은 오버로딩, 오버라이딩, 업캐스팅, 다운캐스팅, 인터페이스, 추상 메서드, 추상 클래스를 통해 구현됩니다. Java에서는 자료형 다형성, 매개변수 다형성, 메소드 다형성으로 나뉩니다.
+</details>
+
+<details style="margin-left: 20px;">
+<summary>꼬리질문1: Upcasting, Downcasting에 대해 설명해주세요.</summary>
+
+<br/>
+Upcasting은 자식 클래스가 부모 클래스 타입으로 형변환 되는 것입니다.
+캐스팅 연산자 괄호를 생략할 수 있습니다.
+부모 클래스로 캐스팅 되면 멤버의 갯수 감소를 의미합니다. 따라서 자식클래스에만 있는 메소드를 사용할 수 없습니다.
+
+Downcasting은 부모 클래스의 참조 변수를 자식 클래스의 참조 변수로 변환하는 것입니다.
+연산자 괄호를 생략할 수 없어 명시적인 형 변환이 필요합니다.
+업캐스팅한 객체를 다시 자식 클래스 타입의 객체로 되돌리는 목적으로 사용합니다.
+
+```java
+class Unit {
+    public void attack() {
+        System.out.println("Unit attack");
+    }
+}
+
+class Magician extends Unit {
+    public void attack() {
+        System.out.println("Magic");
+    }
+
+    public void recall() {
+        System.out.println("Go Back Home");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Unit unit;
+        Magician magician = new Magician();
+        
+        // upcasting
+        unit = (Unit) magician; // 명시적 형변환
+        unit = magician; // 암시적 형변환, upcasting은 형변환 괄호 생략 가능합니다.
+
+        ((Magician) unit).recall();// "Go Back Home", downcasting
+
+        //downcasting 예외
+        Magician unit2 = (Magician) unit;//RUNTIME ERROR
+        unit2.recall();//RUNTIME ERROR
+        unit2.attack();//RUNTIME ERROR
+    }
+}
+```
+
+<br/>
+
+</details>
+
+<details style="margin-left: 20px;">
+<summary>꼬리질문2: 다형성의 장점을 설명해주세요</summary>
+
+<br/>
+다형성은 여러 객체를 하나의 타입으로 관리할 수 있어 유지보수에 용이하게 합니다.
+객체의 재사용이 쉬워 재사용성이 높아지고, 클래스 간의 의존성을 줄여 확장성은 높아지되, 결합도는 낮아집니다.
+<br/>
+
+</details>
+<br/>
+</details>
+
+<details>
 <summary>JAVA의 컴파일 과정을 설명해주세요.</summary>
 
 <br/>
