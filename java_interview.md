@@ -1,6 +1,49 @@
 ## ☕️ 자바 면접 질문 정리
 
 <details>
+<<<<<<< HEAD
+<summary>Checked Exception과 Unchecked Exception의 차이점을 설명해주세요.</summary>
+<br/>
+
+Checked Exception은 Exception의 하위 예외들 중 RuntimeException을 제외한 모든 예외들을 의미합니다. Checked Exception은 컴파일 시 예외처리를 필수로 해주어야 하며, 해주지 않는다면 컴파일 오류가 발생합니다. 이와 반대로 Unchecked Exception은 RuntimeException과 이를 상속받은 자식 예외들을 가리킵니다. 컴파일 시 예외처리를 해주지 않아도 된다는 것이 특징입니다. 
+
+이 둘의 가장 큰 차이점은 예외 발생 시 트랜잭션 롤백 여부 입니다. Unchecked Exception과 Error는 발생 시 트랜젝션이 롤백됩니다. 하지만 Checked Exception의 경우 예외 발생 시 롤백하지 않습니다. 따라서 Checked Exception을 사용하면서 롤백이 발생하기를 원하는 경우 Checked Exception을 Unchecked Exception으로 바꾸어 주어야 합니다.
+
+```java
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class MemberService {
+
+    private final MemberRepository memberRepository;
+
+    public Member createUncheckedEx(){
+        Member member = new Member("Uncheck");
+        memberRepository.save(member);  // 롤백됨
+        if(true) {
+            throw new RuntimeException();
+        }
+        return member;
+    }
+
+    public Member createCheckedEx() throws IOException {
+        Member member = new Member("Check");
+        memberRepository.save(member);  // 롤백되지 않아서 DB에 저장됨
+        if(true) {
+            throw new IOException();
+        }
+        return member;
+    }
+    public Member createEx() throws Exception {
+        Member member = new Member("Exception");
+        memberRepository.save(member);  // 롤백되지 않아서 DB에 저장됨
+        if(true) {
+            throw new Exception();
+        }
+        return member;
+    }
+}
+=======
 <summary>HashMap과 Hashtable의 차이점을 설명해주세요.</summary>
 <br/>
 HashMap과 Hashtable의 가장 큰 차이는 Thread-safe입니다. Hashtable의 모든 데이터 변경 메소드는 synchronized로 선언되어 있습니다. 즉 메소드 호출 전 스레드간 동기화 락을 통해 멀티 스레드 환경에서 data의 무결성을 보장해줍니다. 하지만 HashMap의 경우 Thread-safe하지 않기 때문에 멀티 스레드 환경에서 동시에 객체의 데이터를 조작하는 경우 data의 무결성을 보장할 수 없습니다. 하지만 Hashtable은 느리기 때문에, 동기화를 위해서 ConcurrentHashMap을 사용하는 것이 더 좋은 방법 입니다. 이 외의 차이로 HashMap을 key와 value에 null을 허용하지만, Hashtable의 경우 key와 value에 null을 허용하지 않습니다. 
@@ -101,11 +144,14 @@ System.out.println(str3.equals(str4)); // true
 // 리터럴과 객체 문자열 비교
 System.out.println(str1 == str3); // false
 System.out.println(str3.equals(str1)); // true
+>>>>>>> 3e897cf5513625dae874a4cd307eee5444b3f222
 ```
 <br/>
 </details>
 
 <details>
+<<<<<<< HEAD
+=======
 <summary>equals()를 재정의할 때 hashCode()도 재정의 해야하는 이유를 설명해주세요.</summary>
 <br/>
 
@@ -133,6 +179,7 @@ public int hashCode() {
 </details>
 
 <details>
+>>>>>>> 3e897cf5513625dae874a4cd307eee5444b3f222
 <summary>JAVA의 컴파일 과정을 설명해주세요.</summary>
 
 <br/>
