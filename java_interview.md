@@ -1,6 +1,38 @@
 ## ☕️ 자바 면접 질문 정리
 
 <details>
+<summary>JAVA 버전별 특징(8,11,17,21,22)</summary>
+
+<br/>
+LTS를 기준으로 설명 후에 22버전을 말씀 드리겠습니다.
+
+자바 8은 이전 자바 버전에서 lambda 가 추가되었고 stream이 추가되었습니다. 또한 Optional이 추가되어 경우에 따라 null을 받아 들일 수 있도록 하였습니다. 또한 LocalDateTime 과 같은 타입이 추가되었습니다.
+
+자바 11은 Jigsaw 모듈 시스템이 도입되었고, var 키워드가 등장했습니다. 새로운 가비지 컬렉터 ZGC가 도입되었고 신규 문자열 Method가 추가되었습니다. List, Set, Map 인터페이스에 immutable 생성을 할 수 있도록 컬렉션 팩토리 메소드 기능이 강화되었습니다.
+
+자바 17은 record data class가 추가되어 toString, equals 등에 대한 구현을 자동 제공하였습니다. 텍스트 블록 기능을 추가하여 기존 String을 여러 줄 작성할 때 사용 가능한 기능, 가독성 있는 코드를 지원합니다. 난수 생성 기능이 향상되었으며 Stream.toList()기능이 추가되어 Collectors 호출 없이 스트림을 리스트로 변환할 수 있게 됐습니다.
+
+자바 21은 virtual thread가 도입되어 Thread를 경량화하여 처리량을 높였습니다. List, Set, Map 인터페이스에 순차적인 접근 방법을 제공하는 Sequenced Collections를 추가하였습니다. 또한 pattern matching을 switch 문에서 사용할 수 있도록 하였고 switch 문 안에 null이 들어갈 수 있도록 하였습니다.
+
+마지막으로 가장 최근에 나온 자바22는 미리보기 단계이지만 클래스-파일 API, 스트림 수집기가 추가되었습니다.
+<details style="margin-left: 20px;">
+<summary>꼬리질문1: 프로젝트를 진행할 때 자바 몇을 사용하셨는지 왜 사용했는지 말씀해주세요.</summary>
+
+<br/>
+먼저 스프링부트 3.x버전이 자바 17부터 지원한다는 점, 그리고 자바17이 LTS인 점이 컸습니다. 그래서 최신 스프링 프로젝트와의 호환성을 보장하고자 하였습니다.
+
+</details>
+
+<details style="margin-left: 20px;">
+<summary>꼬리질문2: 자바 17에서 새로 도입된 기능을 사용한게 있다면 말씀해주세요.</summary>
+
+<br/>
+record class를 이용하여 불필요한 lombok을 제거하는 등 더 가독성 있는 코드를 만들었습니다.
+
+</details>
+
+</details>
+<details>
 <summary>JAVA의 컴파일 과정을 설명해주세요.</summary>
 
 <br/>
