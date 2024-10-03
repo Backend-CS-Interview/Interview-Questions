@@ -1,6 +1,160 @@
 ## ☕️ 자바 면접 질문 정리
 
 <details>
+<summary>Java에서 다형성을 설명해주세요.</summary>
+
+<br/>
+다형성이란 여러 가지 형태를 가질 수 있는 성질을 의미합니다. 자바에서는 한 타입의 참조 변수로 여러 타입의 객체를 참조할 수 있게 함으로써 다형성을 구현할 수 있습니다.
+
+<br/>
+<details style="margin-left: 20px;">
+<summary>꼬리질문1: 다형성 구현 방법을 설명해주세요.</summary>
+<br/>
+다형성은 오버로딩, 오버라이딩, 업캐스팅, 다운캐스팅, 인터페이스, 추상 메서드, 추상 클래스를 통해 구현됩니다. Java에서는 자료형 다형성, 매개변수 다형성, 메소드 다형성으로 나뉩니다.
+</details>
+
+<details style="margin-left: 20px;">
+<summary>꼬리질문2: Upcasting, Downcasting에 대해 설명해주세요.</summary>
+
+<br/>
+Upcasting은 자식 클래스가 부모 클래스 타입으로 형변환 되는 것입니다.
+캐스팅 연산자 괄호를 생략할 수 있습니다.
+부모 클래스로 캐스팅 되면 멤버의 갯수 감소를 의미합니다. 따라서 자식클래스에만 있는 메소드를 사용할 수 없습니다.
+
+Downcasting은 부모 클래스의 참조 변수를 자식 클래스의 참조 변수로 변환하는 것입니다.
+연산자 괄호를 생략할 수 없어 명시적인 형 변환이 필요합니다.
+업캐스팅한 객체를 다시 자식 클래스 타입의 객체로 되돌리는 목적으로 사용합니다.
+
+```java
+class Unit {
+    public void attack() {
+        System.out.println("Unit attack");
+    }
+}
+
+class Magician extends Unit {
+    public void attack() {
+        System.out.println("Magic");
+    }
+
+    public void recall() {
+        System.out.println("Go Back Home");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Unit unit;
+        Magician magician = new Magician();
+        
+        // upcasting
+        unit = (Unit) magician; // 명시적 형변환
+        unit = magician; // 암시적 형변환, upcasting은 형변환 괄호 생략 가능합니다.
+
+        ((Magician) unit).recall();// "Go Back Home", downcasting
+
+        //downcasting 예외
+        Magician unit2 = (Magician) unit;//RUNTIME ERROR
+        unit2.recall();//RUNTIME ERROR
+        unit2.attack();//RUNTIME ERROR
+    }
+}
+```
+
+<br/>
+
+</details>
+
+<details style="margin-left: 20px;">
+<summary>꼬리질문3: 다형성의 장점을 설명해주세요</summary>
+
+<br/>
+다형성은 여러 객체를 하나의 타입으로 관리할 수 있어 유지보수에 용이하게 합니다.
+객체의 재사용이 쉬워 재사용성이 높아지고, 클래스 간의 의존성을 줄여 확장성은 높아지되, 결합도는 낮아집니다.
+<br/>
+
+</details>
+<br/>
+</details>
+<details>
+<summary>jdk와 jre의 차이를 설명해주세요.</summary>
+
+<br/>
+JDK는 Java Development Kit의 약자로 개발자들이 자바로 개발하는데 사용되는 SDK라고 생각하면 됩니다. 이 안에는 자바 개발 시 필요한 라이브러리들과 javac, javadoc 등의 개발 도구들이 포함되고, 개발할 때 자바 프로그램을 실행시켜야 하기에 JRE, JVM도 포함되어 있습니다.
+
+JRE는 Java Runtime Environment의 약자로, JVM과 자바 프로그램을 실행할 때 필요한 라이브러리 API를 함께 묶어서 배포되는 패키지입니다. 이외에도 런타임 환경에서 사용하는 프로퍼티 세팅이나 리소스 파일(jar 파일)을 가지고 있습니다.
+
+결론적으로 Java로 프로그램을 개발할 때 JDK가 필요하고, 실행할 때 JRE가 필요하다고 할 수 있습니다.
+
+<details style = "margin-left: 20px;">
+<summary> 꼬리질문1: SDK는 무엇인가요?</summary>
+
+<br/>
+Software Development Kit의 약자로 하드웨어 플랫폼, 운영체제, 혹은 프로그래밍 언어 제작사가 제공하는 툴입니다. SDK의 또 다른 예시로는 안드로이드 스튜디오가 있고, 이를 통해 안드로이드 앱 개발을 할 수 있습니다.
+<br/>
+
+</details>
+
+<details style = "margin-left: 20px;">
+<summary> 꼬리질문2: JDK 종류 중에 알고 있는 것이 있다면 말씀하시고 설명해주세요.</summary>
+
+<br/>
+대표적으로 Oracle JDK와 Open JDK가 있습니다. 
+Oracle JDK는 Java8까지는 무료로 제공했는데 Java11부터 상업적 용도로 사용 시 유료로 사용할 수 있고, 모니터링 도구, 성능 분석 도구 등이 추가되어 있습니다.
+OpenJDK는 무료로 사용할 수 있고 커뮤니티에서 지원하며 상용 기능은 존재하지 않습니다.
+<br/>
+
+</details>
+
+</details>
+
+<details>
+<summary>Checked Exception과 Unchecked Exception의 차이점을 설명해주세요.</summary>
+<br/>
+
+Checked Exception은 Exception의 하위 예외들 중 RuntimeException을 제외한 모든 예외들을 의미합니다. Checked Exception은 컴파일 시 예외처리를 필수로 해주어야 하며, 해주지 않는다면 컴파일 오류가 발생합니다. 이와 반대로 Unchecked Exception은 RuntimeException과 이를 상속받은 자식 예외들을 가리킵니다. 컴파일 시 예외처리를 해주지 않아도 된다는 것이 특징입니다. 
+
+이 둘의 가장 큰 차이점은 예외 발생 시 트랜잭션 롤백 여부 입니다. Unchecked Exception과 Error는 발생 시 트랜젝션이 롤백됩니다. 하지만 Checked Exception의 경우 예외 발생 시 롤백하지 않습니다. 따라서 Checked Exception을 사용하면서 롤백이 발생하기를 원하는 경우 Checked Exception을 Unchecked Exception으로 바꾸어 주어야 합니다.
+
+```java
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class MemberService {
+
+    private final MemberRepository memberRepository;
+
+    public Member createUncheckedEx(){
+        Member member = new Member("Uncheck");
+        memberRepository.save(member);  // 롤백됨
+        if(true) {
+            throw new RuntimeException();
+        }
+        return member;
+    }
+
+    public Member createCheckedEx() throws IOException {
+        Member member = new Member("Check");
+        memberRepository.save(member);  // 롤백되지 않아서 DB에 저장됨
+        if(true) {
+            throw new IOException();
+        }
+        return member;
+    }
+    public Member createEx() throws Exception {
+        Member member = new Member("Exception");
+        memberRepository.save(member);  // 롤백되지 않아서 DB에 저장됨
+        if(true) {
+            throw new Exception();
+        }
+        return member;
+    }
+}
+```
+<br/>
+</details>
+
+<details>
 <summary>HashMap과 Hashtable의 차이점을 설명해주세요.</summary>
 <br/>
 HashMap과 Hashtable의 가장 큰 차이는 Thread-safe입니다. Hashtable의 모든 데이터 변경 메소드는 synchronized로 선언되어 있습니다. 즉 메소드 호출 전 스레드간 동기화 락을 통해 멀티 스레드 환경에서 data의 무결성을 보장해줍니다. 하지만 HashMap의 경우 Thread-safe하지 않기 때문에 멀티 스레드 환경에서 동시에 객체의 데이터를 조작하는 경우 data의 무결성을 보장할 수 없습니다. 하지만 Hashtable은 느리기 때문에, 동기화를 위해서 ConcurrentHashMap을 사용하는 것이 더 좋은 방법 입니다. 이 외의 차이로 HashMap을 key와 value에 null을 허용하지만, Hashtable의 경우 key와 value에 null을 허용하지 않습니다. 
